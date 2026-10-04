@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 510" role="img" aria-labelledby="title description">
+<title id="title">A million green tests can miss an out-of-profile bug</title><desc id="description">Detected failures under six synthetic test configurations.</desc>
+<rect width="100%" height="100%" fill="#f8fafc"/>
+<g font-family="Arial, sans-serif" fill="#0f172a">
+<text x="35" y="38" font-size="23" font-weight="bold">A million green tests can miss an out-of-profile bug</text>
+<text x="35" y="64" font-size="14">Synthetic input distributions; NOT launch failure probabilities. Bar scale: 0 to 30%.</text>
+<text x="35" y="113" font-size="15">million_legacy</text>
+<rect x="340" y="94" width="420" height="24" fill="#e2e8f0"/>
+<rect x="340" y="94" width="0.000" height="24" fill="#475569"/>
+<line x1="340.000" x2="340.005" y1="106" y2="106" stroke="#0f172a" stroke-width="3"/>
+<text x="780" y="112" font-size="14">0/1,000,000</text>
+<text x="35" y="171" font-size="15">expanded_faithful</text>
+<rect x="340" y="152" width="420" height="24" fill="#e2e8f0"/>
+<rect x="340" y="152" width="350.070" height="24" fill="#2563eb"/>
+<line x1="686.326" x2="693.841" y1="164" y2="164" stroke="#0f172a" stroke-width="3"/>
+<text x="780" y="170" font-size="14">25,005/100,000</text>
+<text x="35" y="229" font-size="15">rare_tail_faithful</text>
+<rect x="340" y="210" width="420" height="24" fill="#e2e8f0"/>
+<rect x="340" y="210" width="0.672" height="24" fill="#7c3aed"/>
+<line x1="340.550" x2="340.820" y1="222" y2="222" stroke="#0f172a" stroke-width="3"/>
+<text x="780" y="228" font-size="14">96/200,000</text>
+<text x="35" y="287" font-size="15">expanded_idealized_stub</text>
+<rect x="340" y="268" width="420" height="24" fill="#e2e8f0"/>
+<rect x="340" y="268" width="0.000" height="24" fill="#d97706"/>
+<line x1="340.000" x2="340.054" y1="280" y2="280" stroke="#0f172a" stroke-width="3"/>
+<text x="780" y="286" font-size="14">0/100,000</text>
+<text x="35" y="345" font-size="15">expanded_packet_oracle</text>
+<rect x="340" y="326" width="420" height="24" fill="#e2e8f0"/>
+<rect x="340" y="326" width="0.000" height="24" fill="#dc2626"/>
+<line x1="340.000" x2="340.054" y1="338" y2="338" stroke="#0f172a" stroke-width="3"/>
+<text x="780" y="344" font-size="14">0/100,000</text>
+<text x="35" y="403" font-size="15">expanded_alignment_removed</text>
+<rect x="340" y="384" width="420" height="24" fill="#e2e8f0"/>
+<rect x="340" y="384" width="0.000" height="24" fill="#059669"/>
+<line x1="340.000" x2="340.054" y1="396" y2="396" stroke="#0f172a" stroke-width="3"/>
+<text x="780" y="402" font-size="14">0/100,000</text>
+<text x="35" y="477" font-size="14">Black marks: 95% Wilson intervals. Tiny rare-tail bars are quantified in the results table.</text>
+</g></svg>

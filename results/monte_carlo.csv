@@ -1,0 +1,7 @@
+name,profile,n,seed,expected_detection_p,latent_triggers,navigation_losses,unsafe_commands,detected,detected_rate
+million_legacy,legacy,1000000,5011996,0.0,0,0,0,0,0.0
+expanded_faithful,expanded,100000,5011997,0.25,25005,25005,25005,25005,0.25005
+rare_tail_faithful,rare_tail,200000,5011998,0.0005,96,96,96,96,0.00048
+expanded_idealized_stub,expanded,100000,5011997,0.0,25005,0,0,0,0.0
+expanded_packet_oracle,expanded,100000,5011997,0.0,25005,25005,25005,0,0.0
+expanded_alignment_removed,expanded,100000,5011997,0.0,25005,0,0,0,0.0

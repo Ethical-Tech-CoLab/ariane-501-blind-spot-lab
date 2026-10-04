@@ -1,0 +1,4 @@
+# Optional notebook execution; the simulation and unittest suite use only stdlib.
+ipykernel==6.30.1
+nbclient==0.10.2
+nbformat==5.10.4

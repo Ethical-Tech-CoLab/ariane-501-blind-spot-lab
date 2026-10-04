@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "scope": "Teaching model; map these obligations to real implementation evidence before deployment",
+  "assumptions": [
+    {
+      "id": "A1",
+      "claim": "BH remains representable whenever alignment executes",
+      "status": "refuted for historical Ariane 501 by S2; conditional in model",
+      "owner": "navigation requirements owner",
+      "evidence": ["S2", "S4"],
+      "scope": "Every reachable phase and new trajectory",
+      "falsifier": "BH 40000 at 20 seconds after lift-off",
+      "test": "test_model.ConversionTests.test_out_of_range",
+      "invalidation_trigger": "New vehicle trajectory, scaling, representation or phase schedule",
+      "consequence": "Navigation loss through uncontained conversion failure"
+    },
+    {
+      "id": "A2",
+      "claim": "An unnecessary alignment function cannot affect flight-critical service",
+      "status": "refuted without isolation",
+      "owner": "system safety owner",
+      "evidence": ["S2"],
+      "scope": "Shared processor and exception policy",
+      "falsifier": "Overflow in alignment halts both navigation units",
+      "test": "test_model.SystemTests.test_containment_and_removal",
+      "invalidation_trigger": "Changed task lifetime or exception handling",
+      "consequence": "Apparently noncritical code becomes transitively critical"
+    },
+    {
+      "id": "A3",
+      "claim": "Adding identical replicas prevents a deterministic software failure",
+      "status": "refuted under shared implementation and trigger",
+      "owner": "resilience architect",
+      "evidence": ["S2"],
+      "scope": "Common-mode software rather than iid hardware faults",
+      "falsifier": "One, two and three identical units all halt",
+      "test": "test_model.SystemTests.test_same_bug_defeats_redundancy",
+      "invalidation_trigger": "Shared code, input, configuration or recovery dependency",
+      "consequence": "Redundancy provides no protection against this cause"
+    },
+    {
+      "id": "A4",
+      "claim": "A present bus frame is valid navigation output",
+      "status": "refuted",
+      "owner": "interface and evaluation owner",
+      "evidence": ["S2"],
+      "scope": "Normal and diagnostic modes",
+      "falsifier": "Diagnostic frame passes packet-presence oracle",
+      "test": "test_model.SystemTests.test_diagnostics_guard_not_a_navigation_repair",
+      "invalidation_trigger": "Message schema or error semantics change",
+      "consequence": "Failure is scored as success or drives unsafe control"
+    },
+    {
+      "id": "A5",
+      "claim": "A nominal-output SRI simulator preserves the implementation failure modes",
+      "status": "refuted in this model",
+      "owner": "simulation qualification owner",
+      "evidence": ["S2"],
+      "scope": "Implementation-specific conversion and exception behavior",
+      "falsifier": "Identical hazardous inputs fail with real logic but pass with stub",
+      "test": "test_model.SystemTests.test_simulator_can_erase_bug",
+      "invalidation_trigger": "Changed mock, simulator, instrumentation or hardware interface",
+      "consequence": "False assurance from missing failure paths"
+    },
+    {
+      "id": "A6",
+      "claim": "Many passing samples establish safety outside their input support",
+      "status": "refuted mathematically and constructively",
+      "owner": "evaluation statistics owner",
+      "evidence": ["S2", "S7"],
+      "scope": "Distribution shift and omitted conditions",
+      "falsifier": "A million legacy-like passes coexist with expanded-profile failures",
+      "test": "test_experiments.ExperimentTests.test_narrow_support",
+      "invalidation_trigger": "Changed operating distribution or newly identified variable",
+      "consequence": "Inapplicable confidence bounds are transferred to deployment"
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "research_date": "2026-10-04",
+  "method": "Source discovery followed by direct text verification; original paraphrases only",
+  "access_log": [
+    {"tool": "Tavily MCP search", "status": "blocked", "detail": "Invalid API key"},
+    {"tool": "Tavily MCP advanced extract", "status": "blocked", "detail": "Invalid API key"},
+    {"tool": "Secure key update request", "status": "unavailable", "detail": "User unavailable; no replacement key received"},
+    {"tool": "Alternative web search and direct fetch", "status": "used", "detail": "Search summaries used for discovery, not as primary evidence"},
+    {"url": "https://www.esa.int/Newsroom/Press_Releases/Ariane_501_-_Presentation_of_Inquiry_Board_report", "status": "HTTP 403", "detail": "Official announcement not directly readable; primary inquiry read via university mirror"},
+    {"url": "https://www.esa.int/Enabling_Support/Space_Transportation/Ariane_42", "status": "HTTP 403", "detail": "First-launch chronology independently checked at CNES"}
+  ],
+  "sources": [
+    {
+      "id": "S1",
+      "title": "Ten Years Of Flawless Flights Proved Nothing About The Software That Destroyed Ariane 5",
+      "author": "Channi Greenwall",
+      "publisher": "LinkedIn",
+      "url": "https://www.linkedin.com/pulse/ten-years-flawless-flights-proved-nothing-software-ariane-greenwall-sc5he/",
+      "published": null,
+      "accessed": "2026-10-04",
+      "status": "article body read",
+      "evidence_class": "secondary commentary; motivation for study",
+      "notes": "Publication date not established from retrieved body. Attribution follows the user-supplied article. Full text is not redistributed."
+    },
+    {
+      "id": "S2",
+      "title": "Ariane 5 Flight 501 Failure: Report by the Inquiry Board",
+      "author": "Inquiry Board chaired by J. L. Lions",
+      "publisher": "ESA/CNES inquiry; University of Minnesota mirror",
+      "url": "https://www-users.cse.umn.edu/~arnold/disasters/ariane5rep.html",
+      "published": "1996-07-19",
+      "accessed": "2026-10-04",
+      "status": "relevant report sections read directly",
+      "evidence_class": "primary inquiry report through an academic mirror",
+      "sections": ["2.1", "2.2", "2.3", "3.1(e-t)", "3.2", "4: R1-R5, R9-R12"],
+      "supports": ["conversion and BH mechanism", "common-mode SRI loss", "timing and phases", "test omission", "feasible detection tests", "post-flight reproduction", "assumption governance"],
+      "limitations": "Separate technical report, raw telemetry, full source tree and compiler details were not obtained."
+    },
+    {
+      "id": "S3",
+      "title": "Ariane 1 to 4 launch facilities",
+      "publisher": "CNES / Centre Spatial Guyanais",
+      "url": "https://centrespatialguyanais.cnes.fr/en/ariane-1-4",
+      "accessed": "2026-10-04",
+      "status": "read directly",
+      "evidence_class": "primary institutional history",
+      "supports": ["first Ariane 4 launch on 15 June 1988", "116 Ariane 4 launches in ELA2 history"]
+    },
+    {
+      "id": "S4",
+      "title": "Ada Reference Manual, 4.6 Type Conversions",
+      "publisher": "Ada Information Clearinghouse",
+      "url": "https://www.adaic.org/resources/add_content/standards/12rm/html/RM-4-6.html",
+      "accessed": "2026-10-04",
+      "status": "conversion rules read directly",
+      "evidence_class": "language reference, Ada 2012",
+      "supports": ["nearest-integer ties-away convention for the illustrative model"],
+      "limitations": "Not evidence of exact flown Ada compiler, machine instructions or subtype range."
+    },
+    {
+      "id": "S5",
+      "title": "Combinatorial Methods for Trust and Assurance",
+      "publisher": "NIST CSRC",
+      "url": "https://csrc.nist.gov/Projects/Automated-Combinatorial-Testing-for-Software",
+      "accessed": "2026-10-04",
+      "status": "read directly",
+      "evidence_class": "primary research-program guidance",
+      "supports": ["interaction testing", "coverage measurement", "sequence testing", "limitations of universal extrapolation from empirical interaction findings"]
+    },
+    {
+      "id": "S6",
+      "title": "SP 800-142: Practical Combinatorial Testing",
+      "author": "D. Richard Kuhn, Raghu N. Kacker, Yu Lei",
+      "publisher": "NIST",
+      "url": "https://csrc.nist.gov/pubs/sp/800/142/final",
+      "published": "2010-10",
+      "accessed": "2026-10-04",
+      "status": "publication metadata verified; full publication not analyzed",
+      "evidence_class": "recommended methods reference",
+      "notes": "Technical interpretation in this study also rests on S5 and the independently executable coverage counterexample."
+    },
+    {
+      "id": "S7",
+      "title": "AI RMF 1.0: AI Risks and Trustworthiness",
+      "publisher": "NIST AI Resource Center",
+      "url": "https://airc.nist.gov/airmf-resources/airmf/3-sec-characteristics/",
+      "published": "2023",
+      "accessed": "2026-10-04",
+      "status": "validity, reliability, robustness and safety sections read directly",
+      "evidence_class": "primary voluntary risk-management guidance",
+      "supports": ["contextual intended-use validity", "realistic representative test sets", "robustness and ongoing monitoring"],
+      "limitations": "Does not estimate whether AI would discover Ariane 501's fault."
+    }
+  ]
+}

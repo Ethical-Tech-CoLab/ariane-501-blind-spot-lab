@@ -1,0 +1,25 @@
+name,evidence_class,value,units,source,model_use,limitation
+conversion_source_width,documented,64,bits,S2 section 2.1,Python float proxy,Not original machine implementation
+conversion_target_width,documented,16 signed,bits,S2 section 2.1,Signed range check,Original subtype context unavailable
+integer_limits,derived,-32768 to 32767,conversion units,Signed 16-bit mathematics,Boundary tests,Not a physical speed limit
+rounding,model convention,nearest ties away,conversion units,S4,Ada-style demonstrator,Not verified against flown compiler
+backup_failure_time,documented,36.7,seconds after H0,S2 finding 3.1(e),Historical narrative only,Approximately 30 seconds after lift-off
+active_failure_delay,documented,approximately 0.05,seconds,S2 finding 3.1(f),Historical narrative only,Do not equate with data-cycle period
+data_cycle,documented,0.072,seconds,S2 section 2.1,Optional trace step,Not complete internal SRI schedule
+flight_mode_start,documented,-3,seconds relative H0,S2 section 2.1,Historical narrative only,H0 is ignition command
+alignment_duration_from_mode_start,documented,50,seconds,S2 section 2.1,Historical narrative only,Not time after lift-off
+alignment_end_after_liftoff,approximate documented,40,seconds after lift-off,S2 sections 2.1 and 3.1(m),Fixed modeled cutoff,Approximation not exact schedule
+horizontal_velocity_buildup_ratio,documented,5,relative rate,S2 finding 3.1(p),Context only,Not a BH multiplier or transfer function
+replicas,documented,2,units,S2 section 2.1,Identical deterministic failure,No modeled inter-unit timing delay
+processor_workload_target,documented,80,percent,S2 section 2.2,Context only,No timing or resource model
+bh_legacy_support,synthetic,0 to 30000,conversion units,Study design,Uniform sampling,Not Ariane 4 data
+bh_expanded_support,synthetic,0 to 65535,conversion units,Study design,Uniform sampling,Not Ariane 5 data
+time_support,synthetic,0 to 80,seconds after lift-off,Study design,Uniform independent sampling,Not a flight operational profile
+rare_tail_weight,synthetic,0.001,probability,Study design,Mixture sampling,Not an empirical tail estimate
+rare_tail_bh_support,synthetic,32768 to 65535,conversion units,Study design,Uniform overflow tail,Deliberately constructed stress condition
+synthetic_trace_peak,synthetic,50000,conversion units,Study design,Linear BH ramp over 50 seconds,Not calibrated to flight
+bh_scale_and_filter,unavailable,,,Not obtained in reviewed sources,No imputation,Needed for physical trajectory mapping
+raw_flight_telemetry,unavailable,,,Not obtained in reviewed sources,No imputation,Needed for independent historical replay
+original_source_or_executable,unavailable,,,Not obtained in reviewed sources,No emulation claim,Needed for implementation-in-loop replication
+diagnostic_word_encoding,unavailable,,,Not obtained in reviewed sources,Boolean message-kind abstraction,No bit-pattern or flight-law reconstruction
+sensor_noise_distribution,unavailable,,,Not obtained in reviewed sources,No noise fitted,Needed for quantitative physical uncertainty
