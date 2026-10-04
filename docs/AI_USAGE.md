@@ -18,6 +18,7 @@ No independent human scientific validation was performed in-session. Human direc
 | Synthetic experiment design | AI-assisted and informed by the known historical failure |
 | Code, documentation, and tests | AI-generated/AI-assisted; executable checks are not independent scientific review |
 | Website and interactive demonstration | Implemented by a delegated website subagent |
+| Separate Mariupol companion review | AI-assisted evidence and source-code audit of a pinned external project; the complete review and deterministic audit record are published separately |
 | Model training or fine-tuning | None performed |
 | Blinded comparison of AI discovery ability | None performed |
 | Flight telemetry or recovered flight executable | None obtained or used |
@@ -38,11 +39,15 @@ The historical inquiry and other external publications retain their own authorsh
 
 **Unknown is not zero.** No scores, totals, model names, or efficiency claims are inferred from the amount of code or the existence of this site. No ledger was extracted to produce this disclosure, and it is not a generated `usage-calc` dashboard.
 
-## Research tool access
+## Research process and source access
 
-Tavily search and extraction were attempted, but the configured API key was rejected. A secure key update was requested; no replacement was available. Research continued through alternative web search and direct retrieval. No Tavily-assisted findings are claimed.
+Alternative web search located candidate sources. The assistant then retrieved and read relevant source text, using search summaries for discovery rather than as primary evidence. Claims were checked against the inquiry, institutional chronology, language reference, and methodological sources; original paraphrases and links preserve attribution.
 
 Direct ESA pages returned HTTP 403. The primary inquiry was read via its University of Minnesota mirror, with independent CNES material for Ariane 4 chronology. The [source catalog and access log](../data/sources.json) distinguish directly read material, metadata-only verification, and unavailable evidence.
+
+The detection-readiness experiment is also AI-assisted and hindsight-informed. Its injected controls, analytic budgets, replay records, and Boolean response policy test explicit prerequisites. They do not measure independent AI discovery, whether a human understands the evidence, or whether an organization would actually act on it.
+
+The [Mariupol companion review](MARIUPOL_REVIEW.md) is a separate retrospective audit, not an extension of the Ariane mechanism model. It examines a pinned upstream revision, its research and methods, deterministic sensitivity outputs, and the limits of timing conclusions. The [audit record](../data/mariupol-audit.json) preserves the source revision and hash. Upstream source is linked rather than copied into this repository. Neither the review nor this disclosure provides operational evacuation advice or independent human scientific validation.
 
 ## The CoLab disclosure method used here
 

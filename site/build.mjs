@@ -22,6 +22,11 @@ const docs = [
   { source: "docs/METHODS.md", file: "methods.html", label: "Methods & limitations", group: "Research" },
   { source: "docs/FRAMEWORK.md", file: "framework.html", label: "BLIND-SPOT framework", group: "Research" },
   { source: "results/summary.md", file: "results.html", label: "Published results", group: "Research" },
+  {
+    source: "docs/MARIUPOL_REVIEW.md", file: "mariupol-review.html",
+    label: "Mariupol evidence review", group: "Research", companion: true,
+    description: "A separate retrospective evidence and source-code review of the Mariupol model. Research and methods are present; this is not operational evacuation advice.",
+  },
   { source: "docs/AI_USAGE.md", file: "ai-usage.html", label: "AI usage disclosure", group: "AI Usage" },
 ];
 const docMap = new Map(docs.map(doc => [doc.source, doc.file]));
@@ -34,6 +39,7 @@ function renderMarkdown(markdown, source) {
     if (/^(https?:|mailto:|#)/.test(value)) return value;
     const resolved = new URL(value, `https://local.invalid/${source}`);
     const name = decodeURIComponent(resolved.pathname.slice(1));
+    if (name.startsWith("blind_spot/")) return `${repo}/blob/main/${name}${resolved.hash}`;
     return (docMap.get(name) ?? name) + resolved.hash;
   }
   renderer.heading = function ({ tokens, depth }) {
@@ -95,10 +101,11 @@ function shell(content, current, file, description, pageTitle = title) {
 }
 
 function researchLinks(active) {
+  const link = doc => `<a href="${doc.file}"${doc.file === active ? ' aria-current="page"' : ""}>${doc.label}</a>`;
   return `<p class="eyebrow">RESEARCH LIBRARY</p><nav class="library-nav" aria-label="Research library">${[
-    ...docs.filter(doc => doc.group === "Research"),
+    ...docs.filter(doc => doc.group === "Research" && !doc.companion),
     { file: "sources.html", label: "Sources & provenance" },
-  ].map(doc => `<a href="${doc.file}"${doc.file === active ? ' aria-current="page"' : ""}>${doc.label}</a>`).join("")}</nav>`;
+  ].map(link).join("")}</nav><p class="eyebrow contents-label">COMPANION REVIEW</p><nav class="library-nav" aria-label="Companion reviews">${docs.filter(doc => doc.companion).map(link).join("")}</nav>`;
 }
 
 function csvTable(csv) {
@@ -131,9 +138,11 @@ for (const file of ["styles.css", "model.mjs", "demo.mjs", "favicon.svg"]) {
 }
 for (const file of [
   "data/sources.json", "data/variables.csv", "data/assumptions.json",
+  "data/mariupol-audit.json",
   "results/study.json", "results/summary.md", "results/monte_carlo.csv",
   "results/synthetic_trace.csv", "results/monte_carlo.svg",
   "results/detection_probability.svg", "results/synthetic_trace.svg",
+  "results/detection_readiness.svg",
   ...docs.filter(doc => doc.source.startsWith("docs/")).map(doc => doc.source),
 ]) {
   await copyFile(path.join(root, ...file.split("/")), path.join(out, ...file.split("/")));
@@ -154,6 +163,16 @@ const resultRows = study.monte_carlo.map(row => {
   const [name, meaning] = names[row.name] ?? [row.name, ""];
   return `<tr><th scope="row">${name}<small>${meaning}</small></th><td>${number(row.n)}</td><td>${number(row.navigation_losses)}</td><td><strong>${number(row.detected)}</strong></td></tr>`;
 }).join("");
+const readiness = study.detection_readiness;
+const readinessRows = readiness.ablations.map(row => `<tr><th scope="row">${escape(row.name)}</th>${[
+  row.actual_navigation_loss ? "Yes" : "No",
+  row.injected_control_detected ? "Yes" : "No",
+  number(row.campaign_budget),
+  `${(row.campaign_detection_probability * 100).toFixed(6)}%`,
+  row.discovery_target_met ? "Yes" : "No",
+  row.replay_case !== null ? "Yes" : "No",
+  row.modeled_response_blocks ? "Yes" : "No",
+].map(value => `<td>${value}</td>`).join("")}</tr>`).join("");
 const replacements = {
   TOTAL: number(total),
   EXPANDED: number(expanded.detected),
@@ -161,6 +180,9 @@ const replacements = {
   GRID: number(study.coverage.suites.exhaustive.cases),
   RESULT_ROWS: resultRows,
   MODEL_VERSION: escape(study.model_version),
+  READINESS_CASES: number(readiness.summary.cases),
+  READINESS_BUDGET: number(readiness.target_budget),
+  READINESS_ROWS: readinessRows,
 };
 let overview = await read("site/overview.html");
 overview = overview.replace(/\{\{([A-Z_]+)\}\}/g, (_, key) => {
@@ -174,9 +196,13 @@ await writeFile(path.join(out, "demo.html"), shell(await read("site/demo.html"),
 
 for (const doc of docs) {
   const { html, toc } = renderMarkdown(await read(doc.source), doc.source);
-  const content = `<div class="shell document-layout"><aside class="contents">${doc.group === "Research" ? researchLinks(doc.file) : '<p class="eyebrow">PROCESS TRANSPARENCY</p>'}<p class="eyebrow contents-label">ON THIS PAGE</p><nav aria-label="On this page">${toc.map(item => `<a href="#${item.id}">${item.text}</a>`).join("")}</nav><a class="source-link" href="${repo}/blob/main/${doc.source}">View authoritative Markdown &#8599;</a></aside><article class="prose"><div class="document-meta"><span class="badge">OPEN RESEARCH</span><span>4 October 2026</span><a href="${doc.source}" download>Download Markdown</a></div>${html}<div class="notice">Rendered at build time from the repository source. The source document remains authoritative.</div></article></div>`;
+  const companionNotice = doc.companion
+    ? `<div class="notice">A separate companion review, not an Ariane simulation result or operational evacuation advice. <a href="data/mariupol-audit.json" download>Download the audit JSON</a> or inspect the <a href="${repo}/blob/main/tools/audit_mariupol.mjs">audit runner</a>. Upstream source is linked, not redistributed.</div>`
+    : "";
+  const content = `<div class="shell document-layout"><aside class="contents">${doc.group === "Research" ? researchLinks(doc.file) : '<p class="eyebrow">PROCESS TRANSPARENCY</p>'}<p class="eyebrow contents-label">ON THIS PAGE</p><nav aria-label="On this page">${toc.map(item => `<a href="#${item.id}">${item.text}</a>`).join("")}</nav><a class="source-link" href="${repo}/blob/main/${doc.source}">View authoritative Markdown &#8599;</a></aside><article class="prose"><div class="document-meta"><span class="badge">${doc.companion ? "COMPANION REVIEW" : "OPEN RESEARCH"}</span><span>4 October 2026</span><a href="${doc.source}" download>Download Markdown</a></div>${companionNotice}${html}<div class="notice">Rendered at build time from the repository source. The source document remains authoritative.</div></article></div>`;
   await writeFile(path.join(out, doc.file), shell(content, doc.group, doc.file,
-    `${doc.label} for the Ariane 501 Blind Spot Lab. Complete research with sources, methods, and explicit limitations.`, `${doc.label} | ${title}`));
+    doc.description ?? `${doc.label} for the Ariane 501 Blind Spot Lab. Complete research with sources, methods, and explicit limitations.`,
+    `${doc.label} | ${doc.companion ? "Blind Spot Lab" : title}`));
 }
 
 const sourceContent = catalog.sources.map(source => `<section class="source-record" id="${source.id.toLowerCase()}"><p class="eyebrow">${source.id} / ${escape(source.evidence_class)}</p><h2><a href="${escape(source.url)}">${escape(source.title)}</a></h2><dl>${Object.entries(source).filter(([key]) => !["id", "title", "url", "evidence_class"].includes(key)).map(([key, value]) => `<dt>${escape(key.replaceAll("_", " "))}</dt><dd>${value === null ? "Unknown / not established" : escape(Array.isArray(value) ? value.join("; ") : value)}</dd>`).join("")}</dl></section>`).join("");
@@ -184,4 +210,4 @@ const assumptionContent = assumptions.assumptions.map(item => `<details class="a
 const sourcePage = `<div class="shell document-layout"><aside class="contents">${researchLinks("sources.html")}<p class="eyebrow contents-label">ON THIS PAGE</p><nav aria-label="On this page"><a href="#catalog">Source catalog</a><a href="#access">Research access log</a><a href="#variables">Variable provenance</a><a href="#assumptions">Assumption register</a></nav></aside><article class="prose"><p class="eyebrow">THE EVIDENCE TRAIL</p><h1>Sources & provenance</h1><p class="lead">What was read. What was invented. What remains unknown.</p><p>${escape(catalog.method)}. Research date: ${escape(catalog.research_date)}. This page renders the live repository records rather than maintaining a separate source list.</p><h2 id="catalog">Source catalog</h2><a href="data/sources.json">Download source catalog and access log (JSON)</a>${sourceContent}<h2 id="access">Research access log</h2><ul>${catalog.access_log.map(item => `<li><strong>${escape(item.tool ?? item.url)}: ${escape(item.status)}.</strong> ${escape(item.detail)}</li>`).join("")}</ul><h2 id="variables">Variable provenance</h2><p>Documented facts, derived mathematics, synthetic inputs, and unavailable quantities are kept distinct. Empty historical values mean unavailable, not zero. BH values are conversion units, <strong>not speed or telemetry</strong>.</p><a href="data/variables.csv" download>Download full variable register (CSV)</a>${csvTable(await read("data/variables.csv"))}<h2 id="assumptions">Executable assumption register</h2><p>${escape(assumptions.scope)}. Owners below are responsibility roles, not claims of assigned people.</p><p><a href="data/assumptions.json">Download all assumptions (JSON)</a></p>${assumptionContent}</article></div>`;
 await writeFile(path.join(out, "sources.html"), shell(sourcePage, "Research", "sources.html",
   "Complete source catalog, access log, variable provenance and falsifiable assumption register.", `Sources & provenance | ${title}`));
-console.log(`Built 8 static pages in ${out}; ${number(total)} published opportunities, model ${study.model_version}. No simulation rerun.`);
+console.log(`Built ${docs.length + 3} static pages in ${out}; ${number(total)} published Ariane opportunities, model ${study.model_version}. No simulation or companion audit rerun.`);

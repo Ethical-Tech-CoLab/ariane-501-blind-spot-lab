@@ -10,7 +10,9 @@
 
 ## Executive finding
 
-The assertion contains an important insight and an overreach:
+**Hypothesis:** representative simulation and AI-assisted test design could uncover an Ariane 501-like failure before deployment.
+
+We assess that hypothesis in four parts, separating detectability from an unconditional discovery guarantee:
 
 1. **Supported:** Ariane 501 was a testable, avoidable systems-engineering failure. The inquiry explicitly identifies feasible tests that would have exposed it.
 2. **Conditionally supported:** Monte Carlo can find this class of failure quickly when its input support reaches the dangerous region, the relevant code actually executes, and the oracle recognizes the failure.
@@ -173,7 +175,43 @@ Use unseen, renamed system variants with planted and absent faults, independent 
 
 Preregister the primary outcome and stopping rule before running the comparison. Report detection rates with uncertainty and cluster by scenario and evaluator; repeated generations on the same case are not independent real-world discoveries. Include negative cases to penalize declaring every system unsafe. The [framework](FRAMEWORK.md) provides an exercise protocol, not fabricated results.
 
-## 8. Bottom line for the original assertion
+## 8. What would have to be true for this failure mode to be uncovered?
+
+For a dynamic test to uncover this mechanism, its world must contain a falsifier and preserve that falsifier from input to evaluation. For a finding to change a release decision, evidence and response must also survive. Those are separate obligations, not a single green/red score.
+
+| Prerequisite | Concrete falsifier or control | What its absence means | Transfer to future AI testing |
+|---|---|---|---|
+| Exposure to the dangerous input | Inject BH 40000; compare BH 20000 and legacy-like support | The sampled world excludes the boundary | Include schema violations, distribution shifts, and adversarial tool responses; document unsupported regions |
+| Reachable lifecycle | Replay at 20 s versus 50 s after lift-off | The input never reaches the vulnerable function while active | Exercise startup, tool-call, retry, timeout, and state-transition paths, not just steady-state prompts |
+| Relevant executable semantics | Run the conversion/exception logic versus the nominal-output stub | The harness erases the defect | Test actual parsers, tools, permissions, shared dependencies, and state, not only mocks |
+| Observability and a valid oracle | Score navigation availability versus packet presence | A visible artifact is mistaken for successful service | Check semantic task completion and authorization, not merely an HTTP 200 or fluent response |
+| A sufficient budget for the stated target | Compare 10 with the minimal 5,990 iid tests at synthetic `p=0.0005` | Discovery is possible but the 95% target is unmet | Preregister budgets and stopping rules; justify tail probabilities rather than borrow benchmark pass rates |
+| Actionable evidence and response | Retain input/configuration/oracle for replay; apply a blocking contract | A detection can remain an unrepeatable alert or an ignored finding | Save a minimal regression case, assign an owner, block or explicitly adjudicate release, then retest |
+
+### Controlled prerequisite removals
+
+The existing experiments already separate input support, harness fidelity, and oracle quality. In particular, the matched expanded runs retain exactly the same inputs: a packet oracle hides 25,005 navigation losses, while a stub never executes the failing semantics. The rare-tail run supplies a declared synthetic distribution, not a measured historical tail estimate.
+
+We extend that evidence with a deterministic **128-row, seven-switch prerequisite grid**. The first four switches select overflow exposure, reachable alignment, faithful implementation, and the safety oracle. The last three select an adequate rare-event budget, retention of a replay record, and enforcement of a modeled response policy. Each row evaluates an injected witness using the existing model and separately computes the random-campaign probability. It does not run another Monte Carlo sample.
+
+One control enables every prerequisite. Seven controls remove exactly one prerequisite at a time. A final **guarded negative control** retains all test prerequisites but guards the conversion: it must not trigger the navigation-loss oracle. The generated [control table and complete results](../results/summary.md#detection-prerequisites-controlled-removals) expose the actual model outcome separately from what the harness detects.
+
+![Detection-readiness controls](../results/detection_readiness.svg)
+
+Across the designed grid there are 32 actual navigation losses, 8 detected injected witnesses, 4 retained replayable findings, and 2 modeled response blocks. Four configurations meet the conditional 95% discovery target; one also retains evidence and enables the response policy. **These are truth-table counts, not an empirical readiness score, an AI success rate, or a historical probability.**
+
+The missing-budget control still detects the injected witness and blocks under the modeled response policy. Its separate 10-test random campaign has only about **0.499%** discovery probability at `p=0.0005`, versus at least 95% at 5,990 tests. Missing replay or response does not reduce the detection probability; it breaks the route from finding to an actionable decision.
+
+### Necessary is not sufficient, and sufficient is conditional
+
+- **For the specified vulnerable design and injected dynamic witness**, exposure, reachable lifecycle, faithful semantics, and the safety oracle are each necessary; together they are sufficient for detection. Static analysis, formal reasoning, or source review may discover a related defect without executing this route.
+- **For random discovery**, positive joint exposure and a capable harness/oracle make detection possible, not certain. The relevant quantity is their joint detection probability, not a product of marginal rates unless independence is justified. No finite random budget guarantees discovery when `0 < p < 1`.
+- **For the declared 95% target**, a justified `p` and a large-enough iid budget are sufficient within that probability model. Budget is not necessary for a lucky first detection, and unknown real-world `p` cannot be replaced with the toy value.
+- **For the modeled response chain**, a detected, retained replay case and an enabled blocking policy are sufficient by construction. Actual understanding, ownership, escalation, and organizational action require independent evidence. None was measured here.
+
+The [methods](METHODS.md#detection-readiness-experiment) give exact equations and control settings. The [future-testing guide](FRAMEWORK.md#design-a-detection-readiness-experiment) turns them into a protocol with negative controls, evidence requirements, response obligations, and explicit unknowns.
+
+## 9. Bottom line for the hypothesis
 
 **Keep:** the demand for falsifiable assumptions, realistic simulation, and aggressive multivariate testing.
 
@@ -196,7 +234,7 @@ The inquiry's recommendations already point in this direction: disable unnecessa
 - **S5-S6:** NIST combinatorial-testing project and SP 800-142.
 - **S7:** NIST AI RMF 1.0, trustworthiness characteristics.
 
-Tavily returned "Invalid API key" for both search and extraction. A secure configuration update was requested, but no replacement was available during this run. Alternative search located documents; factual claims were checked against retrieved source text rather than accepted from search-generated summaries. ESA-hosted pages returned HTTP 403. This constrains access, not the existence of the documents.
+Alternative web search located candidate documents; factual claims were checked against directly retrieved source text rather than accepted from search-generated summaries. ESA-hosted pages returned HTTP 403, so the inquiry was read through its university mirror and chronology checked independently at CNES. Source records distinguish direct reading, metadata-only verification, and material not obtained. These limitations constrain the evidence available here, not the existence of the documents.
 
 [S1]: https://www.linkedin.com/pulse/ten-years-flawless-flights-proved-nothing-software-ariane-greenwall-sc5he/
 [S2]: https://www-users.cse.umn.edu/~arnold/disasters/ariane5rep.html

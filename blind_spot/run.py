@@ -99,6 +99,35 @@ def trace_chart(rows: list[dict]) -> str:
     return svg_frame("A boundary-crossing trace exposes the mechanism", "Synthetic BH rises linearly through the conversion boundary.", elements)
 
 
+def readiness_chart(readiness: dict) -> str:
+    columns = ["E", "L", "F", "O", "B", "R", "A", "Detect", "95%", "Block"]
+    elements = [
+        '<text x="35" y="65" font-size="14">Injected controls + analytic rare-tail budgets. No new Monte Carlo; no measured AI discovery rate.</text>',
+    ]
+    for index, label in enumerate(columns):
+        elements.append(f'<text x="{350 + index * 60}" y="102" text-anchor="middle" font-size="14">{label}</text>')
+    for i, row in enumerate(readiness["ablations"]):
+        y = 139 + i * 40
+        elements.append(f'<text x="35" y="{y + 5}" font-size="14">{escape(row["name"])}</text>')
+        values = [row["gates"][key] for key in readiness["factors"]]
+        values += [row["injected_control_detected"], row["discovery_target_met"], row["modeled_response_blocks"]]
+        for index, value in enumerate(values):
+            color = ("#2563eb" if index < 7 else "#7c3aed" if index < 9 else "#d97706") if value else "#e2e8f0"
+            text_color = "#ffffff" if value else "#475569"
+            x = 350 + index * 60
+            elements.append(f'<rect x="{x - 18}" y="{y - 14}" width="36" height="27" rx="4" fill="{color}"/>')
+            elements.append(f'<text x="{x}" y="{y + 5}" text-anchor="middle" font-size="14" fill="{text_color}">{int(value)}</text>')
+    elements.extend([
+        '<text x="35" y="506" font-size="13">1 = enabled/true; 0 = disabled/false. Detect = injected case. 95% = random-campaign target.</text>',
+        '<text x="35" y="531" font-size="13">E exposure; L lifecycle; F fidelity; O oracle; B budget; R replay retained; A response enforced.</text>',
+        '<text x="35" y="556" font-size="13">Block = modeled response to a retained finding, not a measured human action or certification.</text>',
+    ])
+    return svg_frame("What has to be true for a failure to become actionable?",
+                     "Seven prerequisite switches, one-at-a-time removals and a guarded negative control. "
+                     "Short budgets still detect injected faults; missing replay or response does not erase detection.",
+                     elements, height=580)
+
+
 def summary_markdown(results: dict) -> str:
     lines = [
         "# Generated results", "",
@@ -134,6 +163,39 @@ def summary_markdown(results: dict) -> str:
     ])
     for row in results["ablations"]:
         lines.append(f'| {row["name"]} | {row["failed_units"]} | {row["navigation_available"]} | {row["unsafe_command"]} | {row["detected"]} |')
+    readiness = results["detection_readiness"]
+    summary = readiness["summary"]
+    lines.extend([
+        "", "## Detection prerequisites: controlled removals", "",
+        "One known injected case is distinct from a random campaign. The design stays vulnerable except for the guarded negative control.",
+        "The existing matched Monte Carlo runs establish support/harness/oracle contrasts; this experiment adds deterministic process controls, not random draws.",
+        "", "| Control | Actual navigation loss | Injected case detected | Random budget | P(at least one detection) | 95% target met | Replay retained | Modeled response blocks |",
+        "|---|---|---|---:|---:|---|---|---|",
+    ])
+    for row in readiness["ablations"]:
+        lines.append(
+            f'| {row["name"]} | {row["actual_navigation_loss"]} | {row["injected_control_detected"]} | '
+            f'{row["campaign_budget"]:,} | {row["campaign_detection_probability"]:.6%} | '
+            f'{row["discovery_target_met"]} | {row["replay_case"] is not None} | {row["modeled_response_blocks"]} |'
+        )
+    lines.extend([
+        "", "![Controlled prerequisite removals](detection_readiness.svg)", "",
+        f'The complete seven-switch grid has **{summary["cases"]}** distinct configurations: '
+        f'**{summary["actual_navigation_losses"]}** actual navigation losses, '
+        f'**{summary["injected_detections"]}** injected detections, '
+        f'**{summary["replayable_findings"]}** replayable findings, and '
+        f'**{summary["modeled_response_blocks"]}** modeled response blocks.',
+        f'**{summary["discovery_target_met"]}** configurations meet the conditional 95% discovery target; '
+        f'**{summary["response_target_met"]}** also retains evidence and enforces the modeled response.',
+        "These counts enumerate a designed truth table, not an empirical readiness score, probability of human response, or AI discovery rate.",
+        f'With the specified rare-tail detection p={readiness["base_detection_p"]:g}, '
+        f'the minimal 95% budget is **{readiness["target_budget"]:,}**. A smaller budget can still detect a fault; '
+        "it does not meet that target. Replay retention and response policy are downstream of detection.",
+        "The executable core has not changed. The protected negative control prevents this modeled failure even with all test prerequisites enabled.",
+        "Exact equations, replayable cases, and all rows are in [study.json](study.json); "
+        "see [methods](../docs/METHODS.md#detection-readiness-experiment) and the "
+        "[future-testing guide](../docs/FRAMEWORK.md#design-a-detection-readiness-experiment).",
+    ])
     lines.extend([
         "", "## Interpretation", "",
         "The expanded, idealized and packet-oracle runs use identical inputs and seeds. A stub removes the modeled bug; a weak oracle conceals the failure.",
@@ -168,6 +230,7 @@ def generate(output: Path) -> dict:
     write_text(output / "monte_carlo.svg", monte_carlo_chart(results))
     write_text(output / "detection_probability.svg", detection_chart())
     write_text(output / "synthetic_trace.svg", trace_chart(trace))
+    write_text(output / "detection_readiness.svg", readiness_chart(results["detection_readiness"]))
     return results
 
 
@@ -192,7 +255,7 @@ def main() -> None:
                         for line in islice(difference, 60):
                             print(line[:240])
                     raise SystemExit(f"Reproducibility check failed: {expected}")
-        print("PASS: all seven generated result artifacts reproduce byte-for-byte.")
+        print("PASS: all eight generated result artifacts reproduce byte-for-byte.")
     else:
         results = generate(args.output)
         for row in results["monte_carlo"]:

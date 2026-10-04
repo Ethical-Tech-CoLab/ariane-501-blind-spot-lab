@@ -94,6 +94,60 @@ Use the gates proportionately to consequence; these are not a certification stan
 - Unresolved model-fidelity or critical-range gaps are release blockers or receive explicit accountable risk acceptance, never a green default.
 - Post-deployment monitoring detects invalid assumptions and has a defined response.
 
+## Design a detection-readiness experiment
+
+Start with the question: **what would have to be true for this failure mode to be uncovered, and what would make the finding actionable?** Do not start by choosing a large test count.
+
+### 1. State the hypothesis and the decision
+
+Name the failure class, deployed environment, required service, and release consequence. For an AI tool workflow, a concrete hypothesis might be: "a malformed tool result can be accepted as completed work during retry recovery." Define failure independently of the implementation's success flag. Do not claim that this lab discovered that example empirically.
+
+Specify two endpoints: **detection of a real contract violation** and **an evidence-backed response to it**. Passing an evaluation and blocking release are different observables. An intentionally broken control is evidence about the detector, not the deployment's defect rate.
+
+### 2. Build an executable positive control and a protected negative control
+
+Construct a minimal input/state sequence known to violate the contract and a comparable case that must not. Exercise actual integration code where feasible. If some parts remain simulated, list exactly which failure semantics the simulator preserves and verify them against an independent reference.
+
+In this lab, BH 40000 at 20 s exposes the existing conversion chain; guarding that conversion supplies the protected control. BH 20000 and time 50 s are additional non-triggering controls. None supplies flight telemetry or validates the original compiled code.
+
+For AI evaluations, include both faulty and nonfaulty tool responses, unauthorized versus authorized operations, and responses that look plausible but do not complete the task. Have someone other than the test generator validate the oracle before evaluating unknown cases.
+
+### 3. Remove one prerequisite at a time, then cross them
+
+Use the [generated prerequisite controls](../results/summary.md#detection-prerequisites-controlled-removals) as a template:
+
+| Obligation | Intervention | Required evidence |
+|---|---|---|
+| Joint input exposure | Exclude the hazardous input region | Declared support, boundary witnesses, and any dependent input constraints |
+| Reachable lifecycle | Deliver it only after the vulnerable phase | Executed path/state trace, including retry and recovery transitions |
+| Executable fidelity | Replace real behavior with a nominal mock | A control that fails with the real path and passes with the mock |
+| Observability and oracle | Score packet/status presence instead of the contract | Raw output, semantic failure label, and both positive and negative controls |
+| Rare-event budget | Reduce n while holding the declared sampling model fixed | Detection-probability calculation and a preregistered target/stopping rule |
+| Replay retention | Drop the triggering input or relevant configuration | A regression case that another environment can reproduce, or an explicit evidence gap |
+| Response enforcement | Disconnect a retained violation from the release gate | Observable failing exit/status or documented accountable risk disposition |
+
+Keep matched inputs and seeds when comparing harnesses or oracles. Hold unrelated design parameters fixed. Enumerate joint gates when feasible: the lab's 128-row truth table demonstrates how individually plausible steps can fail in combination. Its denominator is not a population sample and must never become a "readiness percentage."
+
+### 4. Choose the budget only after defending exposure
+
+For justified iid per-opportunity detection probability `p`, use `1-(1-p)^n`. If `p=0`, no finite budget helps. If `0<p<1`, no finite random budget guarantees detection. For the lab's invented `p=0.0005`, 5,990 tests meet a 95% target; 10 do not, although either budget could happen to detect a fault. A deterministic boundary witness does not need that random budget.
+
+In an unfamiliar AI deployment, `p` is usually not known. Report that gap, run targeted controls, and use sensitivity analysis over defensible values rather than assuming the toy tail weight. Correlated prompts, shared models, retries, and adaptive generation violate simple iid accounting; a million such interactions are not necessarily a million independent opportunities.
+
+### 5. Make the finding replayable and the response observable
+
+Retain a minimal trigger, phase/state, model/tool/code/configuration versions, oracle version, raw outputs, expected contract, and provenance. Include seeds where relevant, but do not assume a seed reproduces a changing remote model or nondeterministic tool. Store evidence with appropriate access controls; secrets and personal data are not publication artifacts.
+
+Assign a named decision owner, severity, and stopping/escalation rule **before** running the evaluation. Verify that a known failing replay actually produces a failing gate. Verify a protected control is not blocked for the wrong reason. After an intervention, rerun the original witness and unrelated regression controls; a silent error or suppressed diagnostic is not a repair.
+
+The lab's R/A switches model retention and enforcement, not human understanding or institutional follow-through. Its command-line contract demonstrates an exit-code gate. A future evaluation should additionally record time to triage, successful independent replay, disposition, and mitigation quality rather than infer action from an alert count.
+
+### 6. Separate mechanism validation from independent AI discovery
+
+The injected-control protocol answers whether an evaluation pipeline *could expose and preserve a specified failure*. It does not answer whether AI would generate the right input or identify an unknown mechanism without hindsight.
+
+For that empirical question, use the blinded design below with hidden fault catalogs, independent oracle authors, held-out scenarios, matched budgets, and safe cases. Preregister discovery and false-alarm endpoints separately from replay quality and response. Publish unsuccessful attempts and uncertainty. Necessary/sufficient gate equations apply only to their stated dynamic route; they do not rule out static analysis, review, or alternative evidence.
+
 ## A 90-minute teaching exercise
 
 1. **0-10 min: prediction.** Present the abstract system without the famous name. Ask participants to state what "a million tests passed" does and does not establish.
@@ -102,7 +156,7 @@ Use the gates proportionately to consequence; these are not a certification stan
 4. **40-55 min: simulation.** Run the notebook. Compare the matched expanded-input runs and explain why three zero-detection results mean different things.
 5. **55-70 min: coverage.** Inspect the 256-row grid and the pairwise witness. Identify the higher-order conjunction; explain why the historical fixed design needs fewer varying inputs.
 6. **70-80 min: intervention.** Compare removal, conversion protection, isolation, and diagnostic rejection. Identify which property each protects and which it does not.
-7. **80-90 min: transfer.** Choose an AI/tool workflow or ordinary software service. Write one environmental assumption, one falsifier, one strong oracle, and one explicit unknown.
+7. **80-90 min: transfer.** Choose an AI/tool workflow or ordinary software service. Use the prerequisite controls to write a falsifier, lifecycle obligation, oracle, justified budget or explicit unknown, replay record, and response gate.
 
 Score participants on causal understanding, assumption quality, oracle validity, and acknowledgment of uncertainty. Do not score merely on the number of generated tests.
 

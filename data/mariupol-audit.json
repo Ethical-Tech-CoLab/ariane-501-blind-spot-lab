@@ -1,0 +1,202 @@
+{
+  "reviewedRevision": "47af9d5decd9502a1084cc5958c0ee5b0e175e05",
+  "sourceUrl": "https://raw.githubusercontent.com/Ethical-Tech-CoLab/mariupol-evacuation-model/47af9d5decd9502a1084cc5958c0ee5b0e175e05/docs/sensitivity.js",
+  "sourceSha256": "5864d6fcb1ad814909361850e12af4338794da33e34fdb89b838fd5b03e205ce",
+  "type": "Deterministic reproduction of upstream retrospective scores, not evacuation advice",
+  "observationWindow": {
+    "start": "2022-03-05",
+    "end": "2022-05-20",
+    "days": 77
+  },
+  "variants": [
+    {
+      "label": "Published settings",
+      "bounds": {
+        "bI": 10,
+        "bP": 6,
+        "bL": 15,
+        "bT": 18,
+        "bTf": -10,
+        "bD": 60
+      },
+      "p": 6,
+      "crossings": {
+        "0.40": "2022-03-05",
+        "0.55": "2022-03-10",
+        "0.70": "2022-04-28"
+      },
+      "daysFromFirstHighToApril30": 51,
+      "violenceDominantDays": 2,
+      "dominantCounts": "D:53 C:22 R:2",
+      "meanSeverity": 0.583,
+      "march9Severity": 0.526424943,
+      "march10Severity": 0.62386964,
+      "highOrWorseDays": 43
+    },
+    {
+      "label": "Intensity ceiling 4.8",
+      "bounds": {
+        "bI": 4.8,
+        "bP": 6,
+        "bL": 15,
+        "bT": 18,
+        "bTf": -10,
+        "bD": 60
+      },
+      "p": 6,
+      "crossings": {
+        "0.40": "2022-03-05",
+        "0.55": "2022-03-05",
+        "0.70": "2022-03-10"
+      },
+      "daysFromFirstHighToApril30": 56,
+      "violenceDominantDays": 11,
+      "dominantCounts": "D:53 C:13 I:11",
+      "meanSeverity": 0.607,
+      "march9Severity": 0.639885729,
+      "march10Severity": 0.779067473,
+      "highOrWorseDays": 49
+    },
+    {
+      "label": "Deprivation ceiling 45",
+      "bounds": {
+        "bI": 10,
+        "bP": 6,
+        "bL": 15,
+        "bT": 18,
+        "bTf": -10,
+        "bD": 45
+      },
+      "p": 6,
+      "crossings": {
+        "0.40": "2022-03-05",
+        "0.55": "2022-03-10",
+        "0.70": "2022-04-14"
+      },
+      "daysFromFirstHighToApril30": 51,
+      "violenceDominantDays": 2,
+      "dominantCounts": "D:56 C:19 R:2",
+      "meanSeverity": 0.636,
+      "march9Severity": 0.526432945,
+      "march10Severity": 0.623877267,
+      "highOrWorseDays": 55
+    },
+    {
+      "label": "Deprivation ceiling 90",
+      "bounds": {
+        "bI": 10,
+        "bP": 6,
+        "bL": 15,
+        "bT": 18,
+        "bTf": -10,
+        "bD": 90
+      },
+      "p": 6,
+      "crossings": {
+        "0.40": "2022-03-05",
+        "0.55": "2022-03-10",
+        "0.70": null
+      },
+      "daysFromFirstHighToApril30": 51,
+      "violenceDominantDays": 9,
+      "dominantCounts": "D:42 C:26 R:9",
+      "meanSeverity": 0.476,
+      "march9Severity": 0.526423362,
+      "march10Severity": 0.623868134,
+      "highOrWorseDays": 21
+    },
+    {
+      "label": "Exponent 2",
+      "bounds": {
+        "bI": 10,
+        "bP": 6,
+        "bL": 15,
+        "bT": 18,
+        "bTf": -10,
+        "bD": 60
+      },
+      "p": 2,
+      "crossings": {
+        "0.40": "2022-03-09",
+        "0.55": null,
+        "0.70": null
+      },
+      "daysFromFirstHighToApril30": null,
+      "violenceDominantDays": 2,
+      "dominantCounts": "D:53 C:22 R:2",
+      "meanSeverity": 0.424,
+      "march9Severity": 0.405876714,
+      "march10Severity": 0.521397455,
+      "highOrWorseDays": 0
+    },
+    {
+      "label": "Exponent 4",
+      "bounds": {
+        "bI": 10,
+        "bP": 6,
+        "bL": 15,
+        "bT": 18,
+        "bTf": -10,
+        "bD": 60
+      },
+      "p": 4,
+      "crossings": {
+        "0.40": "2022-03-05",
+        "0.55": "2022-03-10",
+        "0.70": null
+      },
+      "daysFromFirstHighToApril30": 51,
+      "violenceDominantDays": 2,
+      "dominantCounts": "D:53 C:22 R:2",
+      "meanSeverity": 0.522,
+      "march9Severity": 0.47917846,
+      "march10Severity": 0.589894168,
+      "highOrWorseDays": 34
+    },
+    {
+      "label": "Intensity 4.8; deprivation 90; exponent 2",
+      "bounds": {
+        "bI": 4.8,
+        "bP": 6,
+        "bL": 15,
+        "bT": 18,
+        "bTf": -10,
+        "bD": 90
+      },
+      "p": 2,
+      "crossings": {
+        "0.40": "2022-03-05",
+        "0.55": "2022-03-10",
+        "0.70": null
+      },
+      "daysFromFirstHighToApril30": 51,
+      "violenceDominantDays": 18,
+      "dominantCounts": "D:42 I:18 C:17",
+      "meanSeverity": 0.41,
+      "march9Severity": 0.498148231,
+      "march10Severity": 0.631249461,
+      "highOrWorseDays": 6
+    }
+  ],
+  "upstreamConsoleOutput": [
+    "label|violence-dominant days|dominant-component counts|first Critical (>=0.70)|mean sev",
+    "BASELINE (bI=10, bD=60, p=6) | 2/77 | D:53 C:22 R:2 | 2022-04-28 | 0.583",
+    "bI=4.8 (observed max) | 11/77 | D:53 C:13 I:11 | 2022-03-10 | 0.607",
+    "bD=45 | 2/77 | D:56 C:19 R:2 | 2022-04-14 | 0.636",
+    "bD=60 | 2/77 | D:53 C:22 R:2 | 2022-04-28 | 0.583",
+    "bD=90 | 9/77 | D:42 C:26 R:9 | never | 0.476",
+    "p=2 | 2/77 | D:53 C:22 R:2 | never | 0.424",
+    "p=4 | 2/77 | D:53 C:22 R:2 | never | 0.522",
+    "p=6 | 2/77 | D:53 C:22 R:2 | 2022-04-28 | 0.583",
+    "bI=4.8 & bD=90 & p=2 | 18/77 | D:42 I:18 C:17 | never | 0.410",
+    "bI=4.8 & bD=90 & p=6 | 18/77 | D:42 I:18 C:17 | 2022-03-10 | 0.505",
+    "\n--- band crossings (baseline) ---",
+    "first sev >= 0.4: 2022-03-05 (day 0)",
+    "first sev >= 0.55: 2022-03-10 (day 5)",
+    "first sev >= 0.7: 2022-04-28 (day 54)",
+    "max sev 0.743",
+    "\n--- intensity component I: baseline vs observed-max ---",
+    "bI=10  max I = 0.480",
+    "bI=4.8 max I = 1.000"
+  ]
+}

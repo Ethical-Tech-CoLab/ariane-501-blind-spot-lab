@@ -165,3 +165,19 @@ test("invalid inputs are rejected rather than shown as green defaults", () => {
   for (const p of [-1, 1.1, NaN]) assert.throws(() => detectionProbability(p, 10));
   for (const n of [-1, 0.5, Infinity, "100"]) assert.throws(() => detectionProbability(0.1, n));
 });
+
+test("demo outcomes agree with the full prerequisite experiment and its protected control", () => {
+  const readiness = published.detection_readiness;
+  assert.equal(readiness.rows.length, 128);
+  for (const row of [...readiness.rows, ...readiness.ablations]) {
+    const design = { ...row.design, software_in_loop: row.gates.implementation_in_loop };
+    const oracle = row.gates.safety_oracle ? "safety" : "packet";
+    const comparison = compareEvaluation(row.stimulus, design, oracle);
+    assert.equal(!comparison.actual.navigation_available, row.actual_navigation_loss);
+    assert.equal(!comparison.observed.navigation_available, row.harness_navigation_loss);
+    assert.equal(comparison.detected, row.injected_control_detected);
+    const chance = detectionProbability(row.campaign_detection_p, row.campaign_budget);
+    assert.ok(Math.abs(chance - row.campaign_detection_probability) < 1e-12);
+    assert.equal(chance >= readiness.target_probability, row.discovery_target_met);
+  }
+});

@@ -23,3 +23,9 @@ raw_flight_telemetry,unavailable,,,Not obtained in reviewed sources,No imputatio
 original_source_or_executable,unavailable,,,Not obtained in reviewed sources,No emulation claim,Needed for implementation-in-loop replication
 diagnostic_word_encoding,unavailable,,,Not obtained in reviewed sources,Boolean message-kind abstraction,No bit-pattern or flight-law reconstruction
 sensor_noise_distribution,unavailable,,,Not obtained in reviewed sources,No noise fitted,Needed for quantitative physical uncertainty
+readiness_switches,synthetic,7,Boolean factors,Study design,128-row joint prerequisite grid,Designed configurations not a population sample
+readiness_target,synthetic,0.95,probability,Study design,Declared random-discovery target,Not a guarantee or empirical AI discovery rate
+readiness_short_budget,synthetic,10,iid opportunities,Study design,Undersized random-campaign control,Injected witness is separate from random draws
+readiness_target_budget,derived,5990,iid opportunities,Binomial formula at p=0.0005,Minimal budget meeting declared target,Conditional on synthetic distribution and iid sampling
+replay_retention,synthetic,true or false,policy switch,Study design,Retain input design oracle and expected detection,Not independent human validation
+response_enforcement,synthetic,true or false,policy switch,Study design,Block under Boolean response rule,Not a measurement of organizational action

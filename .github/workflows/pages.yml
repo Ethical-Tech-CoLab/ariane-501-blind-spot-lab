@@ -8,6 +8,7 @@ on:
       - "docs/**"
       - "data/**"
       - "results/**"
+      - "tools/audit_mariupol.mjs"
       - ".github/workflows/pages.yml"
   pull_request:
     paths:
@@ -15,6 +16,7 @@ on:
       - "docs/**"
       - "data/**"
       - "results/**"
+      - "tools/audit_mariupol.mjs"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
 
@@ -36,6 +38,8 @@ jobs:
           cache: npm
           cache-dependency-path: site/package-lock.json
       - run: npm ci --prefix site
+      - name: Reproduce pinned Mariupol source audit
+        run: node tools/audit_mariupol.mjs --check
       - run: npm run build --prefix site
       - run: npm test --prefix site
       - uses: actions/upload-pages-artifact@v3

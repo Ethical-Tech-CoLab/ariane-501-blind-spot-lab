@@ -46,6 +46,32 @@ It proves that 100% pairwise coverage does not imply detection; it does not esti
 | reject_diagnostic_frame | 2 | False | False | True |
 | idealized_sri_stub | 0 | True | False | False |
 
+## Detection prerequisites: controlled removals
+
+One known injected case is distinct from a random campaign. The design stays vulnerable except for the guarded negative control.
+The existing matched Monte Carlo runs establish support/harness/oracle contrasts; this experiment adds deterministic process controls, not random draws.
+
+| Control | Actual navigation loss | Injected case detected | Random budget | P(at least one detection) | 95% target met | Replay retained | Modeled response blocks |
+|---|---|---|---:|---:|---|---|---|
+| All prerequisites present | True | True | 5,990 | 95.000084% | True | True | True |
+| No overflow exposure | False | False | 5,990 | 0.000000% | False | False | False |
+| Wrong lifecycle only | False | False | 5,990 | 0.000000% | False | False | False |
+| Idealized SRI stub | True | False | 5,990 | 0.000000% | False | False | False |
+| Packet-only oracle | True | False | 5,990 | 0.000000% | False | False | False |
+| Too little random budget | True | True | 10 | 0.498876% | False | True | True |
+| No replay evidence | True | True | 5,990 | 95.000084% | True | False | False |
+| No enforced response | True | True | 5,990 | 95.000084% | True | True | False |
+| Guarded negative control | False | False | 5,990 | 0.000000% | False | False | False |
+
+![Controlled prerequisite removals](detection_readiness.svg)
+
+The complete seven-switch grid has **128** distinct configurations: **32** actual navigation losses, **8** injected detections, **4** replayable findings, and **2** modeled response blocks.
+**4** configurations meet the conditional 95% discovery target; **1** also retains evidence and enforces the modeled response.
+These counts enumerate a designed truth table, not an empirical readiness score, probability of human response, or AI discovery rate.
+With the specified rare-tail detection p=0.0005, the minimal 95% budget is **5,990**. A smaller budget can still detect a fault; it does not meet that target. Replay retention and response policy are downstream of detection.
+The executable core has not changed. The protected negative control prevents this modeled failure even with all test prerequisites enabled.
+Exact equations, replayable cases, and all rows are in [study.json](study.json); see [methods](../docs/METHODS.md#detection-readiness-experiment) and the [future-testing guide](../docs/FRAMEWORK.md#design-a-detection-readiness-experiment).
+
 ## Interpretation
 
 The expanded, idealized and packet-oracle runs use identical inputs and seeds. A stub removes the modeled bug; a weak oracle conceals the failure.

@@ -28,8 +28,8 @@
 </section>
 
 <section class="shell section verdict-section">
-  <div><p class="eyebrow">01 / THE VERDICT</p><h2>More tests cannot discover<br>a failure your test world excludes.</h2></div>
-  <div class="verdict-copy"><p class="lead">The disaster was testable and preventable.<br><strong>Monte Carlo would not automatically have found it.</strong></p><p>The inquiry identified feasible representative ground tests and described post-flight reproduction. Our toy experiment makes a narrower point: discovery depends on input support, the implementation path, and an oracle that recognizes failure.</p><a class="text-link" href="research.html">Read the assertion-by-assertion verdict <span aria-hidden="true">&#8594;</span></a></div>
+  <div><p class="eyebrow">01 / HYPOTHESIS & VERDICT</p><h2>More tests cannot discover<br>a failure your test world excludes.</h2></div>
+  <div class="verdict-copy"><p class="lead">The disaster was testable and preventable.<br><strong>Monte Carlo would not automatically have found it.</strong></p><p>The hypothesis is that representative simulation and AI-assisted test design could expose an Ariane 501-like failure before deployment. The inquiry establishes feasible detectability; our toy experiment tests the conditions needed, not an unconditional AI-discovery guarantee.</p><a class="text-link" href="research.html">Read the hypothesis assessment <span aria-hidden="true">&#8594;</span></a></div>
 </section>
 
 <section class="timeline-band">
@@ -54,14 +54,36 @@
   <p class="fine">A trial is one independent conversion opportunity, not a launch. Rates are not Ariane failure probabilities. <a href="methods.html">Distributions, seeds, confidence intervals, and limitations</a> / <a href="results/study.json">Raw results (JSON)</a></p>
 </section>
 
+<section class="shell section library-section" id="readiness">
+  <p class="eyebrow">04 / FROM POSSIBLE FAILURE TO ACTIONABLE FINDING</p>
+  <h2>What would have to be true<br>for this failure to be uncovered?</h2>
+  <p class="section-intro">An input must reach real failing behavior, the evaluation must recognize it, and the evidence must survive into a decision. These are separate, testable obligations.</p>
+  <ol class="readiness-list">
+    <li><h3>Expose the dangerous input</h3><p>Show that the triggering region exists in the test support. Start with a deterministic boundary witness.</p></li>
+    <li><h3>Reach the vulnerable lifecycle</h3><p>Run the input while the function is active. Include state, ordering, retries, and transitions.</p></li>
+    <li><h3>Preserve executable semantics</h3><p>Exercise the conversion and exception behavior. A nominal-output mock can erase the defect.</p></li>
+    <li><h3>Observe the right contract</h3><p>Distinguish navigation from diagnostics, or real task completion from a success-shaped response.</p></li>
+    <li><h3>Defend the rare-event budget</h3><p>Choose a probability target and justify the sampling model. More tests cannot fix zero detection probability.</p></li>
+    <li><h3>Retain evidence and enforce a response</h3><p>Save a replayable falsifier, name a decision owner, and test that the release gate actually fails.</p></li>
+  </ol>
+  <div class="section-heading"><h3>Remove one prerequisite. Keep the others.</h3><span class="badge amber">CONTROLLED SYNTHETIC EXPERIMENT</span></div>
+  <p class="section-intro">The complete experiment crosses {{READINESS_CASES}} configurations of seven process switches; retention and response are separate. These nine controls isolate missing prerequisites and include a guarded negative control. No additional Monte Carlo draws.</p>
+  <div class="table-scroll" tabindex="0" role="region" aria-label="Controlled detection-readiness experiments">
+    <table><caption>Injected detection is separate from the hypothetical iid random campaign and its modeled response policy.</caption><thead><tr><th scope="col">Control</th><th scope="col">Actual navigation loss</th><th scope="col">Injected detection</th><th scope="col">Random budget</th><th scope="col">Campaign detection chance</th><th scope="col">95% target met</th><th scope="col">Replay retained</th><th scope="col">Modeled block</th></tr></thead><tbody>{{READINESS_ROWS}}</tbody></table>
+  </div>
+  <p class="fine">At the invented rare-tail p = 0.0005, {{READINESS_BUDGET}} tests are the minimal 95% budget. A short budget can still detect the injected fault; it just does not meet that random-discovery target. Retention and response do not alter detection. The Boolean response is not a measurement of human behavior.</p>
+  <div class="actions"><a class="button secondary" href="framework.html#design-a-detection-readiness-experiment">Design your own prerequisite experiment &#8594;</a><a class="button secondary" href="methods.html#detection-readiness-experiment">Exact conditions & limitations</a><a class="text-link" href="results.html#detection-prerequisites-controlled-removals">Complete generated evidence &#8594;</a></div>
+</section>
+
 <section class="shell section library-section">
-  <p class="eyebrow">04 / GO BEYOND THE DASHBOARD</p><h2>The research is the product.<br>The demo is an invitation to question it.</h2>
+  <p class="eyebrow">05 / GO BEYOND THE DASHBOARD</p><h2>The research is the product.<br>The demo is an invitation to question it.</h2>
   <div class="research-cards">
-    <a class="research-card" href="research.html"><span class="card-number">01</span><h3>Read the complete study</h3><p>The inquiry, the original assertion, causal chain, findings, and AI-evaluation analogy.</p><span class="text-link">Full research &#8594;</span></a>
+    <a class="research-card" href="research.html"><span class="card-number">01</span><h3>Read the complete study</h3><p>The inquiry, the hypothesis, causal chain, detection prerequisites, and AI-evaluation analogy.</p><span class="text-link">Full research &#8594;</span></a>
     <a class="research-card" href="methods.html"><span class="card-number">02</span><h3>Inspect the method</h3><p>Conversion semantics, independent samples, temporal trace, uncertainty, and scope.</p><span class="text-link">Methods & limitations &#8594;</span></a>
     <a class="research-card" href="framework.html"><span class="card-number">03</span><h3>Challenge an assumption</h3><p>Nine BLIND-SPOT steps, executable contracts, release gates, and a teaching exercise.</p><span class="text-link">Evaluation framework &#8594;</span></a>
     <a class="research-card" href="sources.html"><span class="card-number">04</span><h3>Follow the evidence</h3><p>Every source, access limitation, invented variable, and open historical quantity.</p><span class="text-link">Provenance register &#8594;</span></a>
   </div>
+  <aside class="notice"><strong>Separate companion review: Mariupol.</strong> A retrospective source-code and methods audit asks what a severity score can establish about timing. Research and methods are present; that does not establish an optimal evacuation date. <a href="mariupol-review.html">Read the full evidence review</a> and <a href="data/mariupol-audit.json" download>download its audit JSON</a>. This is not operational evacuation advice or an Ariane simulation result.</aside>
 </section>
 
-<section class="closing-band"><div class="shell section closing-grid"><div><p class="eyebrow">OPEN ABOUT THE WORK. OPEN ABOUT THE LIMITS.</p><h2>AI helped build this lab.<br>That is not evidence AI<br>would have caught the fault.</h2></div><div><p>We knew the answer before designing the experiment. No blinded AI evaluation, trained model, flight telemetry, or independent human scientific validation was performed in-session.</p><p>Research continued with alternative search and direct retrieval after Tavily rejected the configured key. No Tavily-assisted findings are claimed.</p><a class="button secondary" href="ai-usage.html">Read the AI usage disclosure &#8594;</a><p class="fine">Usage totals, verified model identifiers, time, and cost are unknown, not zero. Model artifact version {{MODEL_VERSION}}.</p></div></div></section>
+<section class="closing-band"><div class="shell section closing-grid"><div><p class="eyebrow">OPEN ABOUT THE WORK. OPEN ABOUT THE LIMITS.</p><h2>AI helped build this lab.<br>That is not evidence AI<br>would have caught the fault.</h2></div><div><p>We knew the answer before designing the experiment. No blinded AI evaluation, trained model, flight telemetry, or independent human scientific validation was performed in-session.</p><p>Alternative web search located sources; direct source-text verification established the claims. The source catalog preserves access limitations, academic mirrors, and metadata-only checks.</p><a class="button secondary" href="ai-usage.html">Read the AI usage disclosure &#8594;</a><p class="fine">Usage totals, verified model identifiers, time, and cost are unknown, not zero. Model artifact version {{MODEL_VERSION}}.</p></div></div></section>

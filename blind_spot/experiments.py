@@ -5,6 +5,7 @@ import random
 
 from .coverage import coverage_experiment
 from .model import Design, Stimulus, evaluate, latent_trigger, oracle_detects
+from .readiness import readiness_experiment
 from .statistics import (
     detection_probability, positive_count, tests_for_detection,
     wilson_interval, zero_failure_upper,
@@ -109,6 +110,9 @@ def run_study() -> dict:
         Experiment("expanded_alignment_removed", "expanded", 100000, SEED + 1, 0.0,
                    replace(baseline, alignment_retained=False)),
     ]
+    readiness = readiness_experiment()
+    for row in readiness["rows"] + readiness["ablations"]:
+        row["campaign_detection_probability"] = reported_probability(row["campaign_detection_probability"])
     return {
         "model_version": MODEL_VERSION,
         "reported_probability_significant_digits": REPORT_DIGITS,
@@ -119,4 +123,5 @@ def run_study() -> dict:
         "probability_table": probability_table(),
         "ablations": ablations(),
         "coverage": coverage_experiment(),
+        "detection_readiness": readiness,
     }

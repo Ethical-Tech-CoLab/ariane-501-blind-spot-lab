@@ -3073,5 +3073,4831 @@
         ]
       }
     }
+  },
+  "detection_readiness": {
+    "schema_version": 1,
+    "scope": "Synthetic prerequisite experiment; injected controls and analytic budgets, no additional Monte Carlo",
+    "factors": [
+      "overflow_support",
+      "alignment_reachable",
+      "implementation_in_loop",
+      "safety_oracle",
+      "adequate_budget",
+      "retain_replay",
+      "enforce_response"
+    ],
+    "base_detection_p": 0.0005,
+    "target_probability": 0.95,
+    "short_budget": 10,
+    "target_budget": 5990,
+    "equations": {
+      "injected_detection": "E and L and F and O (fixed vulnerable design)",
+      "replayable_finding": "injected_detection and R",
+      "modeled_response": "injected_detection and R and A",
+      "campaign_p": "0.0005 if E and L and F and O else 0 (specified rare-tail support)",
+      "discovery_target": "1 - (1 - campaign_p)^n >= 0.95",
+      "response_target": "discovery_target and R and A"
+    },
+    "summary": {
+      "cases": 128,
+      "actual_navigation_losses": 32,
+      "injected_detections": 8,
+      "replayable_findings": 4,
+      "modeled_response_blocks": 2,
+      "discovery_target_met": 4,
+      "response_target_met": 1
+    },
+    "ablations": [
+      {
+        "name": "All prerequisites present",
+        "removed_gate": null,
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": true,
+          "implementation_in_loop": true,
+          "safety_oracle": true,
+          "adequate_budget": true,
+          "retain_replay": true,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": true,
+        "harness_navigation_loss": true,
+        "injected_control_detected": true,
+        "campaign_detection_p": 0.0005,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.950000836299,
+        "discovery_target_met": true,
+        "replay_case": {
+          "stimulus": {
+            "bh": 40000.0,
+            "time_s": 20.0,
+            "alignment_end_s": 40.0
+          },
+          "design": {
+            "alignment_retained": true,
+            "conversion_guard": false,
+            "isolate_alignment_failure": false,
+            "diagnostic_guard": false,
+            "software_in_loop": true,
+            "replicas": 2
+          },
+          "oracle": "safety",
+          "expected_detection": true
+        },
+        "modeled_response_blocks": true,
+        "response_target_met": true
+      },
+      {
+        "name": "No overflow exposure",
+        "removed_gate": "overflow_support",
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": true,
+          "implementation_in_loop": true,
+          "safety_oracle": true,
+          "adequate_budget": true,
+          "retain_replay": true,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "name": "Wrong lifecycle only",
+        "removed_gate": "alignment_reachable",
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": false,
+          "implementation_in_loop": true,
+          "safety_oracle": true,
+          "adequate_budget": true,
+          "retain_replay": true,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "name": "Idealized SRI stub",
+        "removed_gate": "implementation_in_loop",
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": true,
+          "implementation_in_loop": false,
+          "safety_oracle": true,
+          "adequate_budget": true,
+          "retain_replay": true,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": true,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "name": "Packet-only oracle",
+        "removed_gate": "safety_oracle",
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": true,
+          "implementation_in_loop": true,
+          "safety_oracle": false,
+          "adequate_budget": true,
+          "retain_replay": true,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": true,
+        "harness_navigation_loss": true,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "name": "Too little random budget",
+        "removed_gate": "adequate_budget",
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": true,
+          "implementation_in_loop": true,
+          "safety_oracle": true,
+          "adequate_budget": false,
+          "retain_replay": true,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": true,
+        "harness_navigation_loss": true,
+        "injected_control_detected": true,
+        "campaign_detection_p": 0.0005,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.00498876498688,
+        "discovery_target_met": false,
+        "replay_case": {
+          "stimulus": {
+            "bh": 40000.0,
+            "time_s": 20.0,
+            "alignment_end_s": 40.0
+          },
+          "design": {
+            "alignment_retained": true,
+            "conversion_guard": false,
+            "isolate_alignment_failure": false,
+            "diagnostic_guard": false,
+            "software_in_loop": true,
+            "replicas": 2
+          },
+          "oracle": "safety",
+          "expected_detection": true
+        },
+        "modeled_response_blocks": true,
+        "response_target_met": false
+      },
+      {
+        "name": "No replay evidence",
+        "removed_gate": "retain_replay",
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": true,
+          "implementation_in_loop": true,
+          "safety_oracle": true,
+          "adequate_budget": true,
+          "retain_replay": false,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": true,
+        "harness_navigation_loss": true,
+        "injected_control_detected": true,
+        "campaign_detection_p": 0.0005,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.950000836299,
+        "discovery_target_met": true,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "name": "No enforced response",
+        "removed_gate": "enforce_response",
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": true,
+          "implementation_in_loop": true,
+          "safety_oracle": true,
+          "adequate_budget": true,
+          "retain_replay": true,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": true,
+        "harness_navigation_loss": true,
+        "injected_control_detected": true,
+        "campaign_detection_p": 0.0005,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.950000836299,
+        "discovery_target_met": true,
+        "replay_case": {
+          "stimulus": {
+            "bh": 40000.0,
+            "time_s": 20.0,
+            "alignment_end_s": 40.0
+          },
+          "design": {
+            "alignment_retained": true,
+            "conversion_guard": false,
+            "isolate_alignment_failure": false,
+            "diagnostic_guard": false,
+            "software_in_loop": true,
+            "replicas": 2
+          },
+          "oracle": "safety",
+          "expected_detection": true
+        },
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "name": "Guarded negative control",
+        "removed_gate": null,
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": true,
+          "implementation_in_loop": true,
+          "safety_oracle": true,
+          "adequate_budget": true,
+          "retain_replay": true,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": true,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      }
+    ],
+    "rows": [
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": false,
+          "implementation_in_loop": false,
+          "safety_oracle": false,
+          "adequate_budget": false,
+          "retain_replay": false,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": false,
+          "implementation_in_loop": false,
+          "safety_oracle": false,
+          "adequate_budget": false,
+          "retain_replay": false,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": false,
+          "implementation_in_loop": false,
+          "safety_oracle": false,
+          "adequate_budget": false,
+          "retain_replay": true,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": false,
+          "implementation_in_loop": false,
+          "safety_oracle": false,
+          "adequate_budget": false,
+          "retain_replay": true,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": false,
+          "implementation_in_loop": false,
+          "safety_oracle": false,
+          "adequate_budget": true,
+          "retain_replay": false,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": false,
+          "implementation_in_loop": false,
+          "safety_oracle": false,
+          "adequate_budget": true,
+          "retain_replay": false,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": false,
+          "implementation_in_loop": false,
+          "safety_oracle": false,
+          "adequate_budget": true,
+          "retain_replay": true,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": false,
+          "implementation_in_loop": false,
+          "safety_oracle": false,
+          "adequate_budget": true,
+          "retain_replay": true,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": false,
+          "implementation_in_loop": false,
+          "safety_oracle": true,
+          "adequate_budget": false,
+          "retain_replay": false,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": false,
+          "implementation_in_loop": false,
+          "safety_oracle": true,
+          "adequate_budget": false,
+          "retain_replay": false,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": false,
+          "implementation_in_loop": false,
+          "safety_oracle": true,
+          "adequate_budget": false,
+          "retain_replay": true,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": false,
+          "implementation_in_loop": false,
+          "safety_oracle": true,
+          "adequate_budget": false,
+          "retain_replay": true,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": false,
+          "implementation_in_loop": false,
+          "safety_oracle": true,
+          "adequate_budget": true,
+          "retain_replay": false,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": false,
+          "implementation_in_loop": false,
+          "safety_oracle": true,
+          "adequate_budget": true,
+          "retain_replay": false,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": false,
+          "implementation_in_loop": false,
+          "safety_oracle": true,
+          "adequate_budget": true,
+          "retain_replay": true,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": false,
+          "implementation_in_loop": false,
+          "safety_oracle": true,
+          "adequate_budget": true,
+          "retain_replay": true,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": false,
+          "implementation_in_loop": true,
+          "safety_oracle": false,
+          "adequate_budget": false,
+          "retain_replay": false,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": false,
+          "implementation_in_loop": true,
+          "safety_oracle": false,
+          "adequate_budget": false,
+          "retain_replay": false,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": false,
+          "implementation_in_loop": true,
+          "safety_oracle": false,
+          "adequate_budget": false,
+          "retain_replay": true,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": false,
+          "implementation_in_loop": true,
+          "safety_oracle": false,
+          "adequate_budget": false,
+          "retain_replay": true,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": false,
+          "implementation_in_loop": true,
+          "safety_oracle": false,
+          "adequate_budget": true,
+          "retain_replay": false,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": false,
+          "implementation_in_loop": true,
+          "safety_oracle": false,
+          "adequate_budget": true,
+          "retain_replay": false,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": false,
+          "implementation_in_loop": true,
+          "safety_oracle": false,
+          "adequate_budget": true,
+          "retain_replay": true,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": false,
+          "implementation_in_loop": true,
+          "safety_oracle": false,
+          "adequate_budget": true,
+          "retain_replay": true,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": false,
+          "implementation_in_loop": true,
+          "safety_oracle": true,
+          "adequate_budget": false,
+          "retain_replay": false,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": false,
+          "implementation_in_loop": true,
+          "safety_oracle": true,
+          "adequate_budget": false,
+          "retain_replay": false,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": false,
+          "implementation_in_loop": true,
+          "safety_oracle": true,
+          "adequate_budget": false,
+          "retain_replay": true,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": false,
+          "implementation_in_loop": true,
+          "safety_oracle": true,
+          "adequate_budget": false,
+          "retain_replay": true,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": false,
+          "implementation_in_loop": true,
+          "safety_oracle": true,
+          "adequate_budget": true,
+          "retain_replay": false,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": false,
+          "implementation_in_loop": true,
+          "safety_oracle": true,
+          "adequate_budget": true,
+          "retain_replay": false,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": false,
+          "implementation_in_loop": true,
+          "safety_oracle": true,
+          "adequate_budget": true,
+          "retain_replay": true,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": false,
+          "implementation_in_loop": true,
+          "safety_oracle": true,
+          "adequate_budget": true,
+          "retain_replay": true,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": true,
+          "implementation_in_loop": false,
+          "safety_oracle": false,
+          "adequate_budget": false,
+          "retain_replay": false,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": true,
+          "implementation_in_loop": false,
+          "safety_oracle": false,
+          "adequate_budget": false,
+          "retain_replay": false,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": true,
+          "implementation_in_loop": false,
+          "safety_oracle": false,
+          "adequate_budget": false,
+          "retain_replay": true,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": true,
+          "implementation_in_loop": false,
+          "safety_oracle": false,
+          "adequate_budget": false,
+          "retain_replay": true,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": true,
+          "implementation_in_loop": false,
+          "safety_oracle": false,
+          "adequate_budget": true,
+          "retain_replay": false,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": true,
+          "implementation_in_loop": false,
+          "safety_oracle": false,
+          "adequate_budget": true,
+          "retain_replay": false,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": true,
+          "implementation_in_loop": false,
+          "safety_oracle": false,
+          "adequate_budget": true,
+          "retain_replay": true,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": true,
+          "implementation_in_loop": false,
+          "safety_oracle": false,
+          "adequate_budget": true,
+          "retain_replay": true,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": true,
+          "implementation_in_loop": false,
+          "safety_oracle": true,
+          "adequate_budget": false,
+          "retain_replay": false,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": true,
+          "implementation_in_loop": false,
+          "safety_oracle": true,
+          "adequate_budget": false,
+          "retain_replay": false,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": true,
+          "implementation_in_loop": false,
+          "safety_oracle": true,
+          "adequate_budget": false,
+          "retain_replay": true,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": true,
+          "implementation_in_loop": false,
+          "safety_oracle": true,
+          "adequate_budget": false,
+          "retain_replay": true,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": true,
+          "implementation_in_loop": false,
+          "safety_oracle": true,
+          "adequate_budget": true,
+          "retain_replay": false,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": true,
+          "implementation_in_loop": false,
+          "safety_oracle": true,
+          "adequate_budget": true,
+          "retain_replay": false,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": true,
+          "implementation_in_loop": false,
+          "safety_oracle": true,
+          "adequate_budget": true,
+          "retain_replay": true,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": true,
+          "implementation_in_loop": false,
+          "safety_oracle": true,
+          "adequate_budget": true,
+          "retain_replay": true,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": true,
+          "implementation_in_loop": true,
+          "safety_oracle": false,
+          "adequate_budget": false,
+          "retain_replay": false,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": true,
+          "implementation_in_loop": true,
+          "safety_oracle": false,
+          "adequate_budget": false,
+          "retain_replay": false,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": true,
+          "implementation_in_loop": true,
+          "safety_oracle": false,
+          "adequate_budget": false,
+          "retain_replay": true,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": true,
+          "implementation_in_loop": true,
+          "safety_oracle": false,
+          "adequate_budget": false,
+          "retain_replay": true,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": true,
+          "implementation_in_loop": true,
+          "safety_oracle": false,
+          "adequate_budget": true,
+          "retain_replay": false,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": true,
+          "implementation_in_loop": true,
+          "safety_oracle": false,
+          "adequate_budget": true,
+          "retain_replay": false,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": true,
+          "implementation_in_loop": true,
+          "safety_oracle": false,
+          "adequate_budget": true,
+          "retain_replay": true,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": true,
+          "implementation_in_loop": true,
+          "safety_oracle": false,
+          "adequate_budget": true,
+          "retain_replay": true,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": true,
+          "implementation_in_loop": true,
+          "safety_oracle": true,
+          "adequate_budget": false,
+          "retain_replay": false,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": true,
+          "implementation_in_loop": true,
+          "safety_oracle": true,
+          "adequate_budget": false,
+          "retain_replay": false,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": true,
+          "implementation_in_loop": true,
+          "safety_oracle": true,
+          "adequate_budget": false,
+          "retain_replay": true,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": true,
+          "implementation_in_loop": true,
+          "safety_oracle": true,
+          "adequate_budget": false,
+          "retain_replay": true,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": true,
+          "implementation_in_loop": true,
+          "safety_oracle": true,
+          "adequate_budget": true,
+          "retain_replay": false,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": true,
+          "implementation_in_loop": true,
+          "safety_oracle": true,
+          "adequate_budget": true,
+          "retain_replay": false,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": true,
+          "implementation_in_loop": true,
+          "safety_oracle": true,
+          "adequate_budget": true,
+          "retain_replay": true,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": false,
+          "alignment_reachable": true,
+          "implementation_in_loop": true,
+          "safety_oracle": true,
+          "adequate_budget": true,
+          "retain_replay": true,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 20000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": false,
+          "implementation_in_loop": false,
+          "safety_oracle": false,
+          "adequate_budget": false,
+          "retain_replay": false,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": false,
+          "implementation_in_loop": false,
+          "safety_oracle": false,
+          "adequate_budget": false,
+          "retain_replay": false,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": false,
+          "implementation_in_loop": false,
+          "safety_oracle": false,
+          "adequate_budget": false,
+          "retain_replay": true,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": false,
+          "implementation_in_loop": false,
+          "safety_oracle": false,
+          "adequate_budget": false,
+          "retain_replay": true,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": false,
+          "implementation_in_loop": false,
+          "safety_oracle": false,
+          "adequate_budget": true,
+          "retain_replay": false,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": false,
+          "implementation_in_loop": false,
+          "safety_oracle": false,
+          "adequate_budget": true,
+          "retain_replay": false,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": false,
+          "implementation_in_loop": false,
+          "safety_oracle": false,
+          "adequate_budget": true,
+          "retain_replay": true,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": false,
+          "implementation_in_loop": false,
+          "safety_oracle": false,
+          "adequate_budget": true,
+          "retain_replay": true,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": false,
+          "implementation_in_loop": false,
+          "safety_oracle": true,
+          "adequate_budget": false,
+          "retain_replay": false,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": false,
+          "implementation_in_loop": false,
+          "safety_oracle": true,
+          "adequate_budget": false,
+          "retain_replay": false,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": false,
+          "implementation_in_loop": false,
+          "safety_oracle": true,
+          "adequate_budget": false,
+          "retain_replay": true,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": false,
+          "implementation_in_loop": false,
+          "safety_oracle": true,
+          "adequate_budget": false,
+          "retain_replay": true,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": false,
+          "implementation_in_loop": false,
+          "safety_oracle": true,
+          "adequate_budget": true,
+          "retain_replay": false,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": false,
+          "implementation_in_loop": false,
+          "safety_oracle": true,
+          "adequate_budget": true,
+          "retain_replay": false,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": false,
+          "implementation_in_loop": false,
+          "safety_oracle": true,
+          "adequate_budget": true,
+          "retain_replay": true,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": false,
+          "implementation_in_loop": false,
+          "safety_oracle": true,
+          "adequate_budget": true,
+          "retain_replay": true,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": false,
+          "implementation_in_loop": true,
+          "safety_oracle": false,
+          "adequate_budget": false,
+          "retain_replay": false,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": false,
+          "implementation_in_loop": true,
+          "safety_oracle": false,
+          "adequate_budget": false,
+          "retain_replay": false,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": false,
+          "implementation_in_loop": true,
+          "safety_oracle": false,
+          "adequate_budget": false,
+          "retain_replay": true,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": false,
+          "implementation_in_loop": true,
+          "safety_oracle": false,
+          "adequate_budget": false,
+          "retain_replay": true,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": false,
+          "implementation_in_loop": true,
+          "safety_oracle": false,
+          "adequate_budget": true,
+          "retain_replay": false,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": false,
+          "implementation_in_loop": true,
+          "safety_oracle": false,
+          "adequate_budget": true,
+          "retain_replay": false,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": false,
+          "implementation_in_loop": true,
+          "safety_oracle": false,
+          "adequate_budget": true,
+          "retain_replay": true,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": false,
+          "implementation_in_loop": true,
+          "safety_oracle": false,
+          "adequate_budget": true,
+          "retain_replay": true,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": false,
+          "implementation_in_loop": true,
+          "safety_oracle": true,
+          "adequate_budget": false,
+          "retain_replay": false,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": false,
+          "implementation_in_loop": true,
+          "safety_oracle": true,
+          "adequate_budget": false,
+          "retain_replay": false,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": false,
+          "implementation_in_loop": true,
+          "safety_oracle": true,
+          "adequate_budget": false,
+          "retain_replay": true,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": false,
+          "implementation_in_loop": true,
+          "safety_oracle": true,
+          "adequate_budget": false,
+          "retain_replay": true,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": false,
+          "implementation_in_loop": true,
+          "safety_oracle": true,
+          "adequate_budget": true,
+          "retain_replay": false,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": false,
+          "implementation_in_loop": true,
+          "safety_oracle": true,
+          "adequate_budget": true,
+          "retain_replay": false,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": false,
+          "implementation_in_loop": true,
+          "safety_oracle": true,
+          "adequate_budget": true,
+          "retain_replay": true,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": false,
+          "implementation_in_loop": true,
+          "safety_oracle": true,
+          "adequate_budget": true,
+          "retain_replay": true,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 50.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": false,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": true,
+          "implementation_in_loop": false,
+          "safety_oracle": false,
+          "adequate_budget": false,
+          "retain_replay": false,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": true,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": true,
+          "implementation_in_loop": false,
+          "safety_oracle": false,
+          "adequate_budget": false,
+          "retain_replay": false,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": true,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": true,
+          "implementation_in_loop": false,
+          "safety_oracle": false,
+          "adequate_budget": false,
+          "retain_replay": true,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": true,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": true,
+          "implementation_in_loop": false,
+          "safety_oracle": false,
+          "adequate_budget": false,
+          "retain_replay": true,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": true,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": true,
+          "implementation_in_loop": false,
+          "safety_oracle": false,
+          "adequate_budget": true,
+          "retain_replay": false,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": true,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": true,
+          "implementation_in_loop": false,
+          "safety_oracle": false,
+          "adequate_budget": true,
+          "retain_replay": false,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": true,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": true,
+          "implementation_in_loop": false,
+          "safety_oracle": false,
+          "adequate_budget": true,
+          "retain_replay": true,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": true,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": true,
+          "implementation_in_loop": false,
+          "safety_oracle": false,
+          "adequate_budget": true,
+          "retain_replay": true,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": true,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": true,
+          "implementation_in_loop": false,
+          "safety_oracle": true,
+          "adequate_budget": false,
+          "retain_replay": false,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": true,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": true,
+          "implementation_in_loop": false,
+          "safety_oracle": true,
+          "adequate_budget": false,
+          "retain_replay": false,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": true,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": true,
+          "implementation_in_loop": false,
+          "safety_oracle": true,
+          "adequate_budget": false,
+          "retain_replay": true,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": true,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": true,
+          "implementation_in_loop": false,
+          "safety_oracle": true,
+          "adequate_budget": false,
+          "retain_replay": true,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": true,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": true,
+          "implementation_in_loop": false,
+          "safety_oracle": true,
+          "adequate_budget": true,
+          "retain_replay": false,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": true,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": true,
+          "implementation_in_loop": false,
+          "safety_oracle": true,
+          "adequate_budget": true,
+          "retain_replay": false,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": true,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": true,
+          "implementation_in_loop": false,
+          "safety_oracle": true,
+          "adequate_budget": true,
+          "retain_replay": true,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": true,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": true,
+          "implementation_in_loop": false,
+          "safety_oracle": true,
+          "adequate_budget": true,
+          "retain_replay": true,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": true,
+        "harness_navigation_loss": false,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": true,
+          "implementation_in_loop": true,
+          "safety_oracle": false,
+          "adequate_budget": false,
+          "retain_replay": false,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": true,
+        "harness_navigation_loss": true,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": true,
+          "implementation_in_loop": true,
+          "safety_oracle": false,
+          "adequate_budget": false,
+          "retain_replay": false,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": true,
+        "harness_navigation_loss": true,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": true,
+          "implementation_in_loop": true,
+          "safety_oracle": false,
+          "adequate_budget": false,
+          "retain_replay": true,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": true,
+        "harness_navigation_loss": true,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": true,
+          "implementation_in_loop": true,
+          "safety_oracle": false,
+          "adequate_budget": false,
+          "retain_replay": true,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": true,
+        "harness_navigation_loss": true,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": true,
+          "implementation_in_loop": true,
+          "safety_oracle": false,
+          "adequate_budget": true,
+          "retain_replay": false,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": true,
+        "harness_navigation_loss": true,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": true,
+          "implementation_in_loop": true,
+          "safety_oracle": false,
+          "adequate_budget": true,
+          "retain_replay": false,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": true,
+        "harness_navigation_loss": true,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": true,
+          "implementation_in_loop": true,
+          "safety_oracle": false,
+          "adequate_budget": true,
+          "retain_replay": true,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": true,
+        "harness_navigation_loss": true,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": true,
+          "implementation_in_loop": true,
+          "safety_oracle": false,
+          "adequate_budget": true,
+          "retain_replay": true,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": true,
+        "harness_navigation_loss": true,
+        "injected_control_detected": false,
+        "campaign_detection_p": 0.0,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.0,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": true,
+          "implementation_in_loop": true,
+          "safety_oracle": true,
+          "adequate_budget": false,
+          "retain_replay": false,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": true,
+        "harness_navigation_loss": true,
+        "injected_control_detected": true,
+        "campaign_detection_p": 0.0005,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.00498876498688,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": true,
+          "implementation_in_loop": true,
+          "safety_oracle": true,
+          "adequate_budget": false,
+          "retain_replay": false,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": true,
+        "harness_navigation_loss": true,
+        "injected_control_detected": true,
+        "campaign_detection_p": 0.0005,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.00498876498688,
+        "discovery_target_met": false,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": true,
+          "implementation_in_loop": true,
+          "safety_oracle": true,
+          "adequate_budget": false,
+          "retain_replay": true,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": true,
+        "harness_navigation_loss": true,
+        "injected_control_detected": true,
+        "campaign_detection_p": 0.0005,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.00498876498688,
+        "discovery_target_met": false,
+        "replay_case": {
+          "stimulus": {
+            "bh": 40000.0,
+            "time_s": 20.0,
+            "alignment_end_s": 40.0
+          },
+          "design": {
+            "alignment_retained": true,
+            "conversion_guard": false,
+            "isolate_alignment_failure": false,
+            "diagnostic_guard": false,
+            "software_in_loop": true,
+            "replicas": 2
+          },
+          "oracle": "safety",
+          "expected_detection": true
+        },
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": true,
+          "implementation_in_loop": true,
+          "safety_oracle": true,
+          "adequate_budget": false,
+          "retain_replay": true,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": true,
+        "harness_navigation_loss": true,
+        "injected_control_detected": true,
+        "campaign_detection_p": 0.0005,
+        "campaign_budget": 10,
+        "campaign_detection_probability": 0.00498876498688,
+        "discovery_target_met": false,
+        "replay_case": {
+          "stimulus": {
+            "bh": 40000.0,
+            "time_s": 20.0,
+            "alignment_end_s": 40.0
+          },
+          "design": {
+            "alignment_retained": true,
+            "conversion_guard": false,
+            "isolate_alignment_failure": false,
+            "diagnostic_guard": false,
+            "software_in_loop": true,
+            "replicas": 2
+          },
+          "oracle": "safety",
+          "expected_detection": true
+        },
+        "modeled_response_blocks": true,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": true,
+          "implementation_in_loop": true,
+          "safety_oracle": true,
+          "adequate_budget": true,
+          "retain_replay": false,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": true,
+        "harness_navigation_loss": true,
+        "injected_control_detected": true,
+        "campaign_detection_p": 0.0005,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.950000836299,
+        "discovery_target_met": true,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": true,
+          "implementation_in_loop": true,
+          "safety_oracle": true,
+          "adequate_budget": true,
+          "retain_replay": false,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": true,
+        "harness_navigation_loss": true,
+        "injected_control_detected": true,
+        "campaign_detection_p": 0.0005,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.950000836299,
+        "discovery_target_met": true,
+        "replay_case": null,
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": true,
+          "implementation_in_loop": true,
+          "safety_oracle": true,
+          "adequate_budget": true,
+          "retain_replay": true,
+          "enforce_response": false
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": true,
+        "harness_navigation_loss": true,
+        "injected_control_detected": true,
+        "campaign_detection_p": 0.0005,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.950000836299,
+        "discovery_target_met": true,
+        "replay_case": {
+          "stimulus": {
+            "bh": 40000.0,
+            "time_s": 20.0,
+            "alignment_end_s": 40.0
+          },
+          "design": {
+            "alignment_retained": true,
+            "conversion_guard": false,
+            "isolate_alignment_failure": false,
+            "diagnostic_guard": false,
+            "software_in_loop": true,
+            "replicas": 2
+          },
+          "oracle": "safety",
+          "expected_detection": true
+        },
+        "modeled_response_blocks": false,
+        "response_target_met": false
+      },
+      {
+        "gates": {
+          "overflow_support": true,
+          "alignment_reachable": true,
+          "implementation_in_loop": true,
+          "safety_oracle": true,
+          "adequate_budget": true,
+          "retain_replay": true,
+          "enforce_response": true
+        },
+        "stimulus": {
+          "bh": 40000.0,
+          "time_s": 20.0,
+          "alignment_end_s": 40.0
+        },
+        "design": {
+          "alignment_retained": true,
+          "conversion_guard": false,
+          "isolate_alignment_failure": false,
+          "diagnostic_guard": false,
+          "software_in_loop": true,
+          "replicas": 2
+        },
+        "actual_navigation_loss": true,
+        "harness_navigation_loss": true,
+        "injected_control_detected": true,
+        "campaign_detection_p": 0.0005,
+        "campaign_budget": 5990,
+        "campaign_detection_probability": 0.950000836299,
+        "discovery_target_met": true,
+        "replay_case": {
+          "stimulus": {
+            "bh": 40000.0,
+            "time_s": 20.0,
+            "alignment_end_s": 40.0
+          },
+          "design": {
+            "alignment_retained": true,
+            "conversion_guard": false,
+            "isolate_alignment_failure": false,
+            "diagnostic_guard": false,
+            "software_in_loop": true,
+            "replicas": 2
+          },
+          "oracle": "safety",
+          "expected_detection": true
+        },
+        "modeled_response_blocks": true,
+        "response_target_met": true
+      }
+    ]
   }
 }

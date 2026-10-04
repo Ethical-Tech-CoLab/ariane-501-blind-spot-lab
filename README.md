@@ -12,7 +12,9 @@ Inspired by [Channi Greenwall's article](https://www.linkedin.com/pulse/ten-year
 
 > More tests cannot discover a failure your test world excludes.
 
-### The verdict
+### Hypothesis and verdict
+
+**Hypothesis:** representative simulation and AI-assisted test design could uncover an Ariane 501-like failure before deployment. The study tests the required conditions, not an unconditional discovery guarantee.
 
 **The disaster was testable and preventable. Monte Carlo would not automatically have found it.**
 
@@ -37,15 +39,38 @@ These are **not measured Ariane 4/Ariane 5 trajectories or estimated launch fail
 
 ![Detection results](results/monte_carlo.svg)
 
+### What would have to be true for this failure mode to be uncovered?
+
+For the dynamic-testing route studied here:
+
+1. **Exposure:** the test distribution or injected boundary cases must include the dangerous input.
+2. **Reachable lifecycle:** that input must arrive while the vulnerable function executes.
+3. **Executable fidelity:** the harness must exercise the failing conversion and exception behavior, not nominal-output stubs.
+4. **Observability and oracle:** the evaluation must distinguish valid navigation from a diagnostic packet.
+5. **Adequate rare-event budget:** the budget must match a declared detection probability, not just look large.
+6. **Actionable evidence and response:** retain a replayable falsifier and connect it to an enforced contract or accountable decision.
+
+The [controlled prerequisite experiment](results/summary.md#detection-prerequisites-controlled-removals) crosses **128 configurations** of seven test-process switches (evidence retention and response are separate). It includes one-at-a-time removals and a guarded negative control. No extra Monte Carlo draws are added: the **1,600,000** opportunities and all six run counts above are unchanged.
+
+For the fixed vulnerable design, exposure, lifecycle, fidelity, and oracle are jointly necessary and sufficient for detecting the injected witness. That is not a universal theorem about every discovery method. At the specified rare-tail `p=0.0005`, **5,990** iid tests are the minimal budget for at least 95% discovery probability; a shorter budget can still detect a fault. Retaining evidence and enforcing a response matter after detection and are not measured human outcomes.
+
+Use the [future-testing guide](docs/FRAMEWORK.md#design-a-detection-readiness-experiment) to define controls, evidence obligations, stopping rules, and response contracts for other AI/tool simulations. Read the [exact gate conditions and limitations](docs/METHODS.md#detection-readiness-experiment) before transferring them.
+
 ### Read the study
 
-- [Detailed research and assertion-by-assertion verdict](docs/STUDY.md)
+- [Detailed research and hypothesis assessment](docs/STUDY.md)
 - [Methods, variables, and statistical limitations](docs/METHODS.md)
 - [BLIND-SPOT teaching and evaluation framework](docs/FRAMEWORK.md)
 - [Verified source catalog and research-access log](data/sources.json)
 - [Variable provenance](data/variables.csv) and [executable assumption register](data/assumptions.json)
 - [Generated results](results/summary.md), [machine-readable results](results/study.json), and [CSV](results/monte_carlo.csv)
 - [Narrative notebook](study.ipynb)
+
+### Separate companion review: Mariupol
+
+The [Mariupol evidence and methods review](docs/MARIUPOL_REVIEW.md) is a separate retrospective source-code audit, not part of the Ariane simulation and not operational evacuation advice. It recognizes the project's existing research and methods while examining what its score can establish about timing, robustness, and comparative outcomes.
+
+[Read the companion website page](https://ethical-tech-colab.github.io/ariane-501-blind-spot-lab/mariupol-review.html), download the [machine-readable audit](data/mariupol-audit.json), or inspect the [audit runner](tools/audit_mariupol.mjs). The review pins its upstream revision; upstream source is linked, not copied into this repository.
 
 ### Reproduce locally
 
@@ -60,7 +85,7 @@ python -m venv .venv
 .\.venv\Scripts\python.exe -m blind_spot.run --check
 ```
 
-`--check` reruns all experiments and compares seven generated artifacts byte-for-byte without overwriting them. Computed probabilities and interval bounds are published at 12 significant digits to avoid platform-specific last-bit noise; counts are exact. The full run takes seconds to tens of seconds, depending on the machine. Keep the seeds fixed to reproduce these exact counts.
+`--check` reruns all experiments and compares eight generated artifacts byte-for-byte without overwriting them. Computed probabilities and interval bounds are published at 12 significant digits to avoid platform-specific last-bit noise; counts are exact. The full run takes seconds to tens of seconds, depending on the machine. Keep the seeds fixed to reproduce these exact counts.
 
 To see an actual red/green safety evaluation rather than a simulation counter:
 
@@ -110,15 +135,19 @@ Open <http://127.0.0.1:4173/ariane-501-blind-spot-lab/>. The preview deliberatel
 
 The build renders the complete study, methods, framework, results summary, and AI disclosure from their authoritative Markdown. It reads numerical findings from [results/study.json](results/study.json), renders the source/assumption registers, and copies the published data and SVG charts into ignored `site/dist/`. It does **not** rerun the simulation, alter generated research results, or need a cloud/API key. Do not edit or commit the generated site directory.
 
+It also renders the separately labeled Mariupol companion review and copies its audit JSON unchanged. The site now has nine pages. Building the website does not execute the companion audit or fetch its upstream source.
+
 The JavaScript demo ports the mechanism's conversion, lifecycle, common-mode failure, barriers, and oracle semantics. Its tests check signed boundaries (including adjacent floating-point values), all 65,536 signed integers, every published barrier ablation, the 256-configuration grid totals, and analytical probability tables against the existing Python result artifact. These checks do not establish historical fidelity. Browser snapshots reset the system for each input; they are not a temporal recovery model. The probability explorer uses analytic formulas, not a browser PRNG or a replay of Python's seeded draws.
+
+The website's detection-readiness table and chart are built from the generated 128-configuration prerequisite experiment. They distinguish the injected control's actual outcome, evaluation result, random-campaign target, retained replay evidence, and modeled response.
 
 [Research website workflow](.github/workflows/pages.yml) is separate from [simulation reproduction](.github/workflows/reproduce.yml). In repository **Settings > Pages > Build and deployment**, set **Source: GitHub Actions**. Ensure Actions are enabled and the `github-pages` environment permits deployments from `main`. Push website/research changes to `main`, or run **Research website > Run workflow** on `main`. Pull requests build and test without deploying. The workflow uploads only `site/dist/` and deploys that artifact; it does not use the root `/docs` Pages source.
 
 The site's evidence-first [AI disclosure](docs/AI_USAGE.md) cites the actual CoLab `usage-calc` methodology and distinguishes user direction, AI assistance, and unknown usage quantities. No usage totals or model identifiers are fabricated.
 
-### Research tooling
+### Research process
 
-Tavily search and extraction were attempted, but the configured key was rejected. A key update was requested; research continued using other web search and direct page retrieval. No Tavily-assisted findings are claimed. Direct ESA pages returned HTTP 403; the inquiry was read through a university-hosted copy, with independent CNES material for the Ariane 4 chronology. See the [access log](data/sources.json).
+Alternative web search located candidate documents, followed by direct retrieval and verification of relevant source text. Search summaries were discovery aids, not primary evidence. Direct ESA pages returned HTTP 403; the inquiry was read through a university-hosted copy, with independent CNES material for the Ariane 4 chronology. The [source catalog and access log](data/sources.json) preserve those access limits and distinguish directly read sources from metadata-only checks.
 
 ### Reuse
 

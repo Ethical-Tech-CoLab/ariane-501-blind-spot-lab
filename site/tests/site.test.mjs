@@ -13,7 +13,7 @@ const pages = (await readdir(out)).filter(file => file.endsWith(".html"));
 
 test("all required static pages exist with landmarks, navigation, and unique IDs", async () => {
   assert.deepEqual(pages.sort(), ["ai-usage.html", "demo.html", "framework.html", "index.html",
-    "methods.html", "research.html", "results.html", "sources.html"]);
+    "mariupol-review.html", "methods.html", "research.html", "results.html", "sources.html"]);
   for (const file of pages) {
     const html = await read(path.join(out, file));
     assert.match(html, /<html lang="en">/);
@@ -53,6 +53,7 @@ test("full documents, not hand-written summaries, are rendered into the research
     ["docs", "METHODS.md", "methods.html"],
     ["docs", "FRAMEWORK.md", "framework.html"],
     ["docs", "AI_USAGE.md", "ai-usage.html"],
+    ["docs", "MARIUPOL_REVIEW.md", "mariupol-review.html"],
     ["results", "summary.md", "results.html"],
   ];
   for (const [folder, source, page] of docs) {
@@ -82,8 +83,48 @@ test("published data is copied byte-for-byte and the overview counts come from i
 test("disclosure carries provenance and unknowns without fabricated measurements", async () => {
   const html = await read(path.join(out, "ai-usage.html"));
   for (const phrase of ["Unknown is not zero", "usage-calc", "Copilot SDK in VS Code",
-    "Tavily", "No independent human scientific validation", "not a generated"]) {
+    "Alternative web search", "No independent human scientific validation", "not a generated"]) {
     assert.ok(html.includes(phrase), phrase);
   }
   assert.doesNotMatch(html, /\$\d/);
+});
+
+test("prerequisite controls are rendered from the current generated experiment", async () => {
+  const { detection_readiness: readiness } = JSON.parse(await read(path.join(root, "results", "study.json")));
+  const html = await read(path.join(out, "index.html"));
+  assert.ok(html.includes(`${readiness.summary.cases} configurations`));
+  for (const row of readiness.ablations) {
+    const cells = [
+      row.actual_navigation_loss ? "Yes" : "No", row.injected_control_detected ? "Yes" : "No",
+      row.campaign_budget.toLocaleString("en-US"), `${(row.campaign_detection_probability * 100).toFixed(6)}%`,
+      row.discovery_target_met ? "Yes" : "No", row.replay_case !== null ? "Yes" : "No",
+      row.modeled_response_blocks ? "Yes" : "No",
+    ];
+    assert.ok(html.includes(`<th scope="row">${row.name}</th>${cells.map(value => `<td>${value}</td>`).join("")}`), row.name);
+  }
+  for (const page of ["research.html", "methods.html", "framework.html", "results.html"]) {
+    assert.match(await read(path.join(out, page)), /prerequisite/i);
+  }
+});
+
+test("companion review preserves its scope, pinned evidence, and downloadable audit", async () => {
+  const html = await read(path.join(out, "mariupol-review.html"));
+  const audit = JSON.parse(await read(path.join(root, "data", "mariupol-audit.json")));
+  assert.match(html, /<title>Mariupol evidence review \| Blind Spot Lab/);
+  assert.match(html, /COMPANION REVIEW/);
+  assert.match(html, /not operational evacuation advice/);
+  assert.match(html, /Research and methods do exist/);
+  assert.match(html, /I did not find the specific/);
+  assert.ok(html.includes(audit.reviewedRevision));
+  assert.match(html, /href="data\/mariupol-audit\.json" download/);
+  assert.deepEqual(await readFile(path.join(out, "data", "mariupol-audit.json")),
+    await readFile(path.join(root, "data", "mariupol-audit.json")));
+  for (const page of ["research.html", "methods.html", "framework.html", "results.html", "sources.html"]) {
+    const content = await read(path.join(out, page));
+    assert.match(content, /aria-label="Companion reviews"/);
+    assert.match(content, /href="mariupol-review.html"/);
+  }
+  const research = await read(path.join(out, "research.html"));
+  assert.match(research, /The 37-Second Blind Spot/);
+  assert.doesNotMatch(research, /id="mariupol-does-the-model/);
 });

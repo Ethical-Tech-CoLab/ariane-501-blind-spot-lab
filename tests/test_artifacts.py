@@ -19,6 +19,14 @@ class ArtifactTests(unittest.TestCase):
     def test_counts_match_analytic_probabilities(self):
         rows = self.results["monte_carlo"]
         self.assertEqual(sum(row["n"] for row in rows), 1600000)
+        self.assertEqual({row["name"]: (row["n"], row["detected"]) for row in rows}, {
+            "million_legacy": (1000000, 0),
+            "expanded_faithful": (100000, 25005),
+            "rare_tail_faithful": (200000, 96),
+            "expanded_idealized_stub": (100000, 0),
+            "expanded_packet_oracle": (100000, 0),
+            "expanded_alignment_removed": (100000, 0),
+        })
         for row in rows:
             n, p = row["n"], row["expected_detection_p"]
             for key in ("latent_triggers", "navigation_losses", "unsafe_commands", "detected"):
@@ -64,7 +72,16 @@ class ArtifactTests(unittest.TestCase):
                 self.assertEqual(notebook["cells"][i + 1]["cell_type"], "markdown")
                 self.assertFalse(any(out["output_type"] == "error" for out in cell["outputs"]))
                 compile("".join(cell["source"]), f"cell-{i}", "exec")
-        self.assertEqual(code_count, 5)
+        self.assertEqual(code_count, 6)
+
+    def test_published_readiness_matches_recomputed_controls(self):
+        from blind_spot.experiments import reported_probability
+        from blind_spot.readiness import readiness_experiment
+
+        expected = readiness_experiment()
+        for row in expected["rows"] + expected["ablations"]:
+            row["campaign_detection_probability"] = reported_probability(row["campaign_detection_probability"])
+        self.assertEqual(self.results["detection_readiness"], expected)
 
     def test_figures_are_parseable_and_accessible(self):
         for path in (ROOT / "results").glob("*.svg"):

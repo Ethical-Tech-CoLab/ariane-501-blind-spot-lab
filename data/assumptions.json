@@ -73,6 +73,30 @@
       "test": "test_experiments.ExperimentTests.test_narrow_support",
       "invalidation_trigger": "Changed operating distribution or newly identified variable",
       "consequence": "Inapplicable confidence bounds are transferred to deployment"
+    },
+    {
+      "id": "A7",
+      "claim": "Detecting a violation automatically produces replayable evidence and an enforced response",
+      "status": "refuted by independent replay-retention and response switches",
+      "owner": "evaluation and release decision owner",
+      "evidence": [],
+      "scope": "Synthetic response policy; not empirical human behavior",
+      "falsifier": "Disable replay retention or response while preserving detection",
+      "test": "test_readiness.ReadinessTests.test_replay_and_response_are_downstream_of_detection",
+      "invalidation_trigger": "Changed logging, evidence retention, gate wiring or decision ownership",
+      "consequence": "A detected defect does not become a reproducible release blocker"
+    },
+    {
+      "id": "A8",
+      "claim": "Any nonzero detection probability makes a short random budget adequate",
+      "status": "refuted relative to a declared discovery target",
+      "owner": "evaluation statistics owner",
+      "evidence": [],
+      "scope": "Specified iid rare-tail distribution and 95% target",
+      "falsifier": "10 tests miss the target at p=0.0005 while 5990 is the minimal adequate budget",
+      "test": "test_readiness.ReadinessTests.test_minimal_rare_event_budget_is_computed_not_assumed",
+      "invalidation_trigger": "Changed tail probability, dependence, stopping rule or probability target",
+      "consequence": "A possible detection is misrepresented as a high-probability discovery guarantee"
     }
   ]
 }

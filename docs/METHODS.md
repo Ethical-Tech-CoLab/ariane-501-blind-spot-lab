@@ -101,13 +101,70 @@ Navigation loss in this design requires six simultaneous factor settings; oracle
 
 No pairwise method, sample size, or finite full-factorial grid can prove completeness over unspecified variables, continuous values, arbitrary event sequences, or an incorrect model.
 
+## Detection-readiness experiment
+
+This extends the support/harness/oracle contrasts with **deterministic controls and exact analytic budgets**, not additional Monte Carlo draws. The six seeded runs, their seeds, and their total 1,600,000 opportunities are unchanged. The eight-factor design above tests design/harness interactions; this separate seven-switch design tests the path from exposure to a replayable finding and a modeled release response.
+
+The seven binary inputs are complete, intentionally crossed design records. No historical data are imputed. All 128 rows are unique; the nine named controls are selected illustrations, not additional independent samples.
+
+| Symbol | Switch | Enabled | Disabled |
+|---|---|---|---|
+| E | Overflow support | Inject BH 40000; random campaign uses the published rare-tail mixture | Inject BH 20000; campaign BH confined to non-overflow support |
+| L | Alignment reachable | Inject at 20 s; campaign time uniform [0,80] s | Inject at 50 s; campaign time restricted to [40,80] s |
+| F | Implementation in loop | Existing conversion and exception semantics | Idealized nominal-output stub |
+| O | Safety oracle | Missing navigation OR unsafe command | Packet presence only |
+| B | Adequate random budget | `tests_for_detection(0.0005, 0.95)` = 5,990 | 10 |
+| R | Retain replay evidence | Save stimulus, design settings, oracle, expected failure | Do not retain the finding's replay record |
+| A | Enforce response | A retained detected finding blocks under a Boolean policy | Detection has no modeled release consequence |
+
+The implementation design retains alignment, leaves conversion unguarded and unisolated, accepts diagnostics, and uses two identical replicas. It is held fixed across the one-at-a-time prerequisite removals. A separate protected negative control enables the conversion guard while keeping all seven switches true. This is a control against blanket failure reporting, not a flight-certified repair.
+
+### Exact gate conditions
+
+For the fixed vulnerable design, define:
+
+```text
+actual navigation loss in injected case = E AND L
+harness navigation loss                = E AND L AND F
+D (injected witness detected)          = E AND L AND F AND O
+replayable finding                     = D AND R
+modeled response block                 = D AND R AND A
+```
+
+The first four switches are jointly necessary and sufficient for **this injected dynamic witness**, not for every possible discovery technique. Two replicas do not make the events independent. Rejecting diagnostics alone would still trigger the safety oracle because navigation remains unavailable.
+
+For the separate **specified iid random campaign**:
+
+```text
+p = 0.001 * 0.5 = 0.0005 when E, L, F, O are enabled; otherwise 0
+n = 5990 when B is enabled; otherwise 10
+q = 1 - (1 - p)^n
+discovery target met = q >= 0.95
+response target met  = (q >= 0.95) AND R AND A
+```
+
+The 0.001 overflow-tail weight and independent one-half active-time probability come from the existing rare-tail design. Disabled E or L removes joint support; disabled F or O removes detection. This formula is conditional on that construction; real dependencies, sampling without replacement, adaptive stopping, and uncertain tail probabilities require different analysis. The guard in the protected control removes the event, so its detection `p=0`, not 0.0005.
+
+The injected witness is intentionally selected, **not one of the random campaign draws**. Its detection therefore does not depend on B. At `p=0.0005`, 10 random tests give approximately 0.00498876498688 probability of detection. The first budget meeting 0.95 is 5,990; the immediately preceding budget fails the target. That minimal-threshold property is checked numerically, not inferred from rounded display values.
+
+R and A do not change `p`, the injected detection, or the physical model. `response_target_met` describes the conditional probability target for the *defined* response chain, assuming the retention/policy switches do what they say. It does not measure a person's understanding, operational response reliability, or organizational behavior. Missing evidence is represented by `null`, not a fabricated replay.
+
+### Execution, controls, and falsification
+
+[readiness.py](../blind_spot/readiness.py) evaluates every control using the existing [mechanism model](../blind_spot/model.py). The complete grid and all retained witnesses are published under `detection_readiness` in [study.json](../results/study.json). [The summary](../results/summary.md#detection-prerequisites-controlled-removals) and [control chart](../results/detection_readiness.svg) are generated from that record.
+
+Tests independently check the logical conditions for every row, one-factor changes in the named controls, the minimal budget threshold, and each saved witness by reconstructing and executing its stimulus/design/oracle. They also cross the detection gates with retention/removal, conversion guarding, exception isolation, and diagnostic rejection from the existing design. A stub or packet oracle must mask the positive case; the faithful safety oracle must detect it; the guarded negative control must not.
+
+For actual release-style behavior rather than a Boolean response proxy, the existing `python -m blind_spot.check_contract --design baseline` returns exit code 1 for the known violations, while `--design alignment-removed` returns 0. That executable contrast is useful evidence of a gate, but is not evidence a real organization will enforce it.
+
 ## Reproducibility and verification
 
 - Unit tests: conversion boundaries, all 65,536 representable integers, phase boundary, redundant common-mode failure, fault containment, diagnostic handling, probability formulas, invalid inputs, and actual pair coverage.
 - Release-style contract: `python -m blind_spot.check_contract --design baseline` exits 1 for two boundary violations; `--design alignment-removed` exits 0. The test suite verifies these expected contrasting outcomes.
-- Result verification: recompute and byte-compare all seven generated artifacts.
+- Result verification: recompute and byte-compare all eight generated artifacts.
 - Artifact checks: analytic rates versus observed counts, matched input counts, scenario completeness, source/assumption traceability, parseable SVG/CSV/JSON, and notebook structure.
 - Notebook: recomputes the study, compares with published results, displays figures and interprets each code cell.
+- Prerequisite verification: all 128 process-gate combinations, nine named controls, saved-case replay, exact budget threshold, and separate detection/evidence/response outcomes.
 - CI: repeats tests, result verification, and notebook execution on Python 3.12.
 
 The Windows lock file captures the original optional notebook environment. The simulation itself uses no third-party numerical libraries. Independent Linux CI initially exposed last-bit differences in `expm1`-derived probabilities (for example, 0.6321207427683548 versus 0.632120742768355). Counts, scenarios and conclusions were identical.
