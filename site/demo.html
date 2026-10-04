@@ -1,0 +1,71 @@
+<div class="shell">
+  <section class="page-heading"><p class="eyebrow">THE INTERACTIVE LAB <span class="badge amber">SYNTHETIC MODEL</span></p><h1>Break the assumption.<br><span>Then test the test.</span></h1><p class="lead">Change one condition. Compare what the implementation does<br>with what the evaluation claims.</p><p class="fine">BH is an invented input in conversion units, not speed or flight telemetry. These illustrative barriers are not flight-certified fixes.</p></section>
+  <noscript><div class="notice">This demo requires JavaScript. The <a href="research.html">complete research</a>, <a href="methods.html">methods</a>, and <a href="results.html">published results</a> remain available without it.</div></noscript>
+  <section id="lab" aria-labelledby="lab-title">
+    <div class="section-heading"><h2 id="lab-title">One conversion opportunity</h2><button type="button" id="reset" class="button secondary">Reset all controls</button></div>
+    <div class="presets" aria-label="Scenario presets">
+      <span>START WITH A QUESTION</span>
+      <button type="button" data-preset="green">Can green hide failure?</button>
+      <button type="button" data-preset="boundary">Where is the boundary?</button>
+      <button type="button" data-preset="stub">What if we mock the SRI?</button>
+      <button type="button" data-preset="guard">Do diagnostics restore navigation?</button>
+      <button type="button" data-preset="removed">Remove unused alignment</button>
+    </div>
+    <form id="controls" class="lab-grid">
+      <div class="control-panel">
+        <fieldset><legend><span>01</span> Input & lifecycle</legend>
+          <div class="control-heading"><label for="bh">BH <small>conversion units</small></label><input id="bh" name="bh" type="number" min="-40000" max="65535" step="any" value="40000" required aria-describedby="bh-help"></div>
+          <input id="bh-range" type="range" aria-label="BH conversion units slider" min="-40000" max="65535" step="0.01" value="40000">
+          <div class="range-labels"><span>-40,000</span><span>65,535</span></div>
+          <p id="bh-help" class="fine">Signed 16-bit result: -32,768 to 32,767.<br>Ties-away overflow starts at <strong>&le; -32,768.5</strong> or <strong>&ge; 32,767.5</strong>.</p>
+          <div class="boundary-buttons"><button type="button" data-bh="32767.49">32,767.49</button><button type="button" data-bh="32767.5">32,767.5</button><button type="button" data-bh="-32768.5">-32,768.5</button></div>
+          <div class="control-heading time-heading"><label for="time">Time <small>seconds after lift-off</small></label><input id="time" name="time" type="number" min="0" max="80" step="any" value="20" required aria-describedby="time-help"></div>
+          <input id="time-range" type="range" aria-label="Seconds after lift-off slider" min="0" max="80" step="0.1" value="20">
+          <div class="range-labels"><span>0 s / lift-off</span><span>40 s / cutoff</span><span>80 s</span></div>
+          <p id="time-help" class="fine">Alignment executes only when time &lt; 40 s, if retained. This is a fresh snapshot on every change, <strong>not recovery of a previously halted processor</strong>.</p>
+          <div class="boundary-buttons"><button type="button" data-time="39.999">Just before cutoff</button><button type="button" data-time="40">At 40 s</button></div>
+        </fieldset>
+        <fieldset><legend><span>02</span> System design</legend>
+          <label class="check"><input type="checkbox" id="alignment_retained" checked><span>Retain alignment after lift-off<small>Keep the unnecessary conversion path reachable.</small></span></label>
+          <label class="check"><input type="checkbox" id="conversion_guard"><span>Guard the conversion<small>Report out-of-range status; do not silently clamp BH.</small></span></label>
+          <label class="check"><input type="checkbox" id="isolate_alignment_failure"><span>Isolate alignment exceptions<small>Keep navigation running when alignment raises an error.</small></span></label>
+          <label class="check"><input type="checkbox" id="diagnostic_guard"><span>Reject diagnostic frames as flight data<small>Blocks the unsafe-command proxy, not navigation loss.</small></span></label>
+          <label class="select-label" for="replicas">Identical SRI replicas</label>
+          <select id="replicas"><option value="1">1 unit</option><option value="2" selected>2 identical units</option><option value="3">3 identical units</option></select>
+          <p class="fine">Shared deterministic faults are not independent hardware failures.</p>
+        </fieldset>
+        <fieldset><legend><span>03</span> Test apparatus</legend>
+          <label for="harness" class="select-label">What is in the test loop?</label>
+          <select id="harness"><option value="implementation">Mechanism implementation</option><option value="stub">Idealized nominal-output SRI stub</option></select>
+          <label for="oracle" class="select-label">What counts as failure?</label>
+          <select id="oracle"><option value="safety">Safety: navigation loss OR unsafe command</option><option value="packet">Weak oracle: missing bus frame only</option></select>
+          <p class="fine">A stub changes the test, not the implementation. A diagnostic frame is still a frame.</p>
+        </fieldset>
+      </div>
+      <div class="outcome-panel">
+        <div id="demo-error" class="notice error" role="alert" hidden></div>
+        <div id="outcomes" aria-live="polite" aria-atomic="true">
+          <div class="outcome" id="actual-card"><p class="eyebrow">ACTUAL IMPLEMENTATION / WITH SELECTED BARRIERS</p><h3 id="actual-title">Awaiting model</h3><p id="actual-detail"></p><dl class="outcome-metrics"><div><dt>Failed units</dt><dd id="failed-units">--</dd></div><div><dt>Navigation</dt><dd id="navigation">--</dd></div><div><dt>Unsafe command</dt><dd id="unsafe">--</dd></div></dl></div>
+          <div class="outcome" id="evaluation-card"><p class="eyebrow">APPARENT EVALUATION / SELECTED HARNESS & ORACLE</p><h3 id="evaluation-title">Awaiting evaluation</h3><p id="evaluation-detail"></p></div>
+          <div class="explanation" id="explanation"></div>
+          <ol class="causal-path" aria-label="Implementation causal path"><li><span>01 / CONVERSION</span><strong id="conversion-state">--</strong></li><li><span>02 / EXCEPTION POLICY</span><strong id="exception-state">--</strong></li><li><span>03 / DIAGNOSTIC INTERFACE</span><strong id="diagnostic-state">--</strong></li></ol>
+        </div>
+        <p class="fine">The left-hand controls are interventions on a Boolean mechanism model, not a digital twin. Navigation loss and unsafe commands are modeled outcomes, not a physical breakup calculation. <a href="methods.html#state-and-causal-structure">Read the state semantics</a>.</p>
+      </div>
+    </form>
+    <nav class="lab-jump" aria-label="Mobile lab navigation"><a href="#controls">Adjust controls</a><a href="#outcomes">See live outcome</a></nav>
+  </section>
+
+  <section class="section probability-section" aria-labelledby="probability-title">
+    <div><p class="eyebrow">TEST BUDGET EXPLORER / ANALYTIC, NOT A RANDOM RUN</p><h2 id="probability-title">When does more testing help?</h2><p>Assume independent opportunities, each with probability <var>p</var> of both exercising <em>and detecting</em> failure. This calculator is separate from the snapshot controls above.</p><p class="formula">P(at least one detection) = 1 - (1 - p)<sup>n</sup></p><p class="fine">Baseline profiles assume retained alignment, no containment, a faithful implementation, and a safety oracle. The weak oracle and idealized stub have detection p = 0 in this model. No browser random generator is used; these are analytic probabilities, not a replay of Python's seeded counts.</p></div>
+    <form id="probability-controls" class="probability-panel">
+      <label for="profile" class="select-label">Synthetic detection profile</label>
+      <select id="profile"><option value="0">Legacy-like / excluded support (p = 0)</option><option value="0.25">Expanded / faithful (p = 0.25)</option><option value="0.0005" selected>Rare tail / faithful (p = 0.0005)</option><option value="custom">Custom assumption</option></select>
+      <div class="probability-inputs"><div><label for="probability">Per-opportunity detection p</label><input id="probability" type="number" min="0" max="1" step="any" value="0.0005" required></div><div><label for="budget">Test budget n</label><input id="budget" type="number" min="0" max="10000000" step="1" value="1000" required></div></div>
+      <div class="boundary-buttons"><button type="button" data-budget="10">10 tests</button><button type="button" data-budget="1000">1,000</button><button type="button" data-budget="1000000">1 million</button></div>
+      <p id="probability-error" role="alert" class="error" hidden></p>
+      <div id="probability-result" aria-live="polite" aria-atomic="true"><strong id="probability-value">--</strong><span>chance of at least one detection</span><div class="probability-track" aria-hidden="true"><div id="probability-bar"></div></div><p>95% discovery budget: <strong id="budget-value">--</strong></p><p id="probability-explanation" class="fine"></p></div>
+    </form>
+  </section>
+  <section class="section demo-next"><h2>A snapshot is not a trajectory.</h2><p>The published temporal demonstration latches navigation loss: ending alignment does not restart a halted processor. Its invented linear BH ramp first crosses the sampled threshold at 32.8 seconds, <strong>not the historical failure time</strong>.</p><figure><img src="results/synthetic_trace.svg" alt="Synthetic linear BH trace with latched navigation loss at 32.8 seconds; not flight telemetry" loading="lazy"><figcaption>Published synthetic trace, copied from the research artifact at build time. <a href="methods.html#temporal-demonstration">Read its method and limitations</a>.</figcaption></figure><a href="framework.html" class="button secondary">Take the BLIND-SPOT teaching exercise &#8594;</a></section>
+</div>

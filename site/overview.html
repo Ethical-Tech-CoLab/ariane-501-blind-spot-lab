@@ -1,0 +1,67 @@
+<section class="hero">
+  <div class="shell hero-grid">
+    <div>
+      <p class="eyebrow"><span class="status-dot"></span> ARIANE 501 / AN ASSUMPTION-CHALLENGING LAB</p>
+      <h1>The 37-Second<br><span>Blind Spot.</span></h1>
+      <p class="subtitle">A Million Green Tests,<br>One Missing Assumption.</p>
+      <p class="hero-description">A testable disaster. A misleading green dashboard. A lesson for the systems we build with AI.</p>
+      <div class="actions"><a class="button primary" href="demo.html">Enter the interactive lab <span aria-hidden="true">&#8594;</span></a><a class="button secondary" href="research.html">Read the full research</a></div>
+      <p class="fine hero-note">Retrospective documentary analysis + synthetic mechanism experiment.<br>No flight telemetry. No claim of independent AI discovery.</p>
+    </div>
+    <div class="hero-instrument" aria-label="Illustration of the gap between a passing evaluation and a failing implementation">
+      <div class="instrument-top"><span>THE ASSURANCE GAP</span><span class="badge">ILLUSTRATIVE</span></div>
+      <div class="instrument-value"><strong>64<span>bit</span></strong><span class="conversion-arrow" aria-hidden="true">&#8594;</span><strong>16<span>bit</span></strong></div>
+      <p class="instrument-caption">One unchecked conversion.<br>Two identical failure paths.</p>
+      <div class="replica-grid"><div><span>SRI / 01</span><strong>HALTED</strong></div><div><span>SRI / 02</span><strong>HALTED</strong></div></div>
+      <div class="signal-line" aria-hidden="true"></div>
+      <div class="instrument-verdict"><span>Packet received?</span><strong>PASS <span aria-hidden="true">&#10003;</span></strong></div>
+      <p class="instrument-foot">The weak oracle sees a frame.<br>It does not see the loss of navigation.</p>
+    </div>
+  </div>
+</section>
+
+<section class="shell evidence-strip" aria-label="Study at a glance">
+  <div><strong>{{TOTAL}}</strong><span>seeded synthetic opportunities</span></div>
+  <div><strong>{{LEGACY}}</strong><span>legacy-like tests; zero detections</span></div>
+  <div><strong>{{GRID}}</strong><span>finite Boolean configurations</span></div>
+  <div><strong>1 missing assumption</strong><span>no finite test count can repair it</span></div>
+</section>
+
+<section class="shell section verdict-section">
+  <div><p class="eyebrow">01 / THE VERDICT</p><h2>More tests cannot discover<br>a failure your test world excludes.</h2></div>
+  <div class="verdict-copy"><p class="lead">The disaster was testable and preventable.<br><strong>Monte Carlo would not automatically have found it.</strong></p><p>The inquiry identified feasible representative ground tests and described post-flight reproduction. Our toy experiment makes a narrower point: discovery depends on input support, the implementation path, and an oracle that recognizes failure.</p><a class="text-link" href="research.html">Read the assertion-by-assertion verdict <span aria-hidden="true">&#8594;</span></a></div>
+</section>
+
+<section class="timeline-band">
+  <div class="shell section"><p class="eyebrow">02 / FIRST, GET THE CLOCK RIGHT</p><h2>37 seconds after ignition.<br>About 30 after lift-off.</h2>
+    <ol class="timeline">
+      <li><span>H0</span><h3>Ignition command</h3><p>The inquiry's reference clock. Not lift-off.</p></li>
+      <li><span>H0 + 36.7 s</span><h3>Backup SRI fails</h3><p>The alignment conversion exceeds its range.</p></li>
+      <li><span>About 0.05 s later</span><h3>Active SRI follows</h3><p>Identical software, the same systematic error.</p></li>
+      <li><span>About H0 + 39 s</span><h3>Launcher disintegrates</h3><p>Erroneous steering causes destructive loads.</p></li>
+    </ol>
+    <p class="fine">Timing from the 1996 Inquiry Board report. Its 72 ms data cycle and approximately 0.05 s failure separation are different statements. <a href="research.html#chronology-do-not-mix-the-clocks">Read the chronology and source</a>.</p>
+  </div>
+</section>
+
+<section class="shell section">
+  <div class="section-heading"><div><p class="eyebrow">03 / SAME INPUTS. DIFFERENT TEST WORLDS.</p><h2>Three ways to get a green result.<br>Only one changes the design.</h2></div><span class="badge amber">SYNTHETIC EVIDENCE</span></div>
+  <p class="section-intro">The expanded-input experiments share identical random inputs. Replacing the implementation, weakening the oracle, and removing alignment can all produce zero detections. They do not mean the same thing.</p>
+  <div class="table-scroll results-table" tabindex="0" role="region" aria-label="Six published Monte Carlo experiments">
+    <table><caption>Published opportunities and outcomes, read directly from the result artifact at build time</caption><thead><tr><th scope="col">Test world</th><th scope="col">Opportunities</th><th scope="col">Navigation losses</th><th scope="col">Detected</th></tr></thead><tbody>{{RESULT_ROWS}}</tbody></table>
+  </div>
+  <div class="callout"><span class="callout-number">{{EXPANDED}}</span><p>Modeled navigation losses hidden by the packet-presence oracle.<br><strong>A million green tests are not a safety argument without a meaningful contract.</strong></p><a href="demo.html#lab" class="text-link">Try the misleading green preset &#8594;</a></div>
+  <p class="fine">A trial is one independent conversion opportunity, not a launch. Rates are not Ariane failure probabilities. <a href="methods.html">Distributions, seeds, confidence intervals, and limitations</a> / <a href="results/study.json">Raw results (JSON)</a></p>
+</section>
+
+<section class="shell section library-section">
+  <p class="eyebrow">04 / GO BEYOND THE DASHBOARD</p><h2>The research is the product.<br>The demo is an invitation to question it.</h2>
+  <div class="research-cards">
+    <a class="research-card" href="research.html"><span class="card-number">01</span><h3>Read the complete study</h3><p>The inquiry, the original assertion, causal chain, findings, and AI-evaluation analogy.</p><span class="text-link">Full research &#8594;</span></a>
+    <a class="research-card" href="methods.html"><span class="card-number">02</span><h3>Inspect the method</h3><p>Conversion semantics, independent samples, temporal trace, uncertainty, and scope.</p><span class="text-link">Methods & limitations &#8594;</span></a>
+    <a class="research-card" href="framework.html"><span class="card-number">03</span><h3>Challenge an assumption</h3><p>Nine BLIND-SPOT steps, executable contracts, release gates, and a teaching exercise.</p><span class="text-link">Evaluation framework &#8594;</span></a>
+    <a class="research-card" href="sources.html"><span class="card-number">04</span><h3>Follow the evidence</h3><p>Every source, access limitation, invented variable, and open historical quantity.</p><span class="text-link">Provenance register &#8594;</span></a>
+  </div>
+</section>
+
+<section class="closing-band"><div class="shell section closing-grid"><div><p class="eyebrow">OPEN ABOUT THE WORK. OPEN ABOUT THE LIMITS.</p><h2>AI helped build this lab.<br>That is not evidence AI<br>would have caught the fault.</h2></div><div><p>We knew the answer before designing the experiment. No blinded AI evaluation, trained model, flight telemetry, or independent human scientific validation was performed in-session.</p><p>Research continued with alternative search and direct retrieval after Tavily rejected the configured key. No Tavily-assisted findings are claimed.</p><a class="button secondary" href="ai-usage.html">Read the AI usage disclosure &#8594;</a><p class="fine">Usage totals, verified model identifiers, time, and cost are unknown, not zero. Model artifact version {{MODEL_VERSION}}.</p></div></div></section>
