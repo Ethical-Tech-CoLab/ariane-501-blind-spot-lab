@@ -110,4 +110,6 @@ No pairwise method, sample size, or finite full-factorial grid can prove complet
 - Notebook: recomputes the study, compares with published results, displays figures and interprets each code cell.
 - CI: repeats tests, result verification, and notebook execution on Python 3.12.
 
-The Windows lock file captures the original optional notebook environment. The simulation itself uses no third-party numerical libraries. Floating-point/libm and pseudorandom behavior can differ across runtimes; CI checks the chosen runtime rather than assuming all language implementations are bit-identical.
+The Windows lock file captures the original optional notebook environment. The simulation itself uses no third-party numerical libraries. Independent Linux CI initially exposed last-bit differences in `expm1`-derived probabilities (for example, 0.6321207427683548 versus 0.632120742768355). Counts, scenarios and conclusions were identical.
+
+Computed probabilities and interval bounds are therefore published at **12 significant digits**, explicitly recorded in the result metadata. Internal statistical calculations retain full floating-point precision; integer counts and sample settings are unchanged. Regression tests check both that the observed platform noise disappears and that meaningful probability changes remain visible. Byte-for-byte checks still compare every generated artifact rather than silently accepting arbitrary differences.

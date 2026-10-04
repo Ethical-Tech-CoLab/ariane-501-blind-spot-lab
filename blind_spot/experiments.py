@@ -12,7 +12,13 @@ from .statistics import (
 
 
 SEED = 5011996
-MODEL_VERSION = "1.0"
+MODEL_VERSION = "1.1"
+REPORT_DIGITS = 12
+
+
+def reported_probability(value: float) -> float:
+    """Discard platform-libm last-bit noise only at the publication boundary."""
+    return float(f"{value:.{REPORT_DIGITS}g}")
 
 
 @dataclass(frozen=True)
@@ -52,8 +58,8 @@ def run_experiment(spec: Experiment) -> dict:
     return {
         **asdict(spec), **counts,
         "detected_rate": counts["detected"] / spec.n,
-        "wilson_95": list(wilson_interval(counts["detected"], spec.n)),
-        "zero_failure_upper_95": zero_failure_upper(spec.n) if counts["detected"] == 0 else None,
+        "wilson_95": [reported_probability(bound) for bound in wilson_interval(counts["detected"], spec.n)],
+        "zero_failure_upper_95": reported_probability(zero_failure_upper(spec.n)) if counts["detected"] == 0 else None,
     }
 
 
@@ -82,7 +88,8 @@ def probability_table() -> list[dict]:
         {
             "p": p, "tests_for_95_percent": tests_for_detection(p),
             "detection_by_budget": {
-                str(n): detection_probability(p, n) for n in (10, 100, 1000, 10000, 1000000)
+                str(n): reported_probability(detection_probability(p, n))
+                for n in (10, 100, 1000, 10000, 1000000)
             },
         }
         for p in (0.0, 0.000001, 0.0005, 0.01, 0.25)
@@ -104,6 +111,7 @@ def run_study() -> dict:
     ]
     return {
         "model_version": MODEL_VERSION,
+        "reported_probability_significant_digits": REPORT_DIGITS,
         "seed": SEED,
         "data_class": "synthetic; no flight telemetry",
         "independence": "iid test opportunities, not independent redundant software",

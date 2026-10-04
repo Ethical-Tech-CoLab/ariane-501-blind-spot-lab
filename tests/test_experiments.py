@@ -2,7 +2,7 @@ import math
 import unittest
 
 from blind_spot.coverage import all_rows, coverage_experiment, interactions
-from blind_spot.experiments import Experiment, run_experiment
+from blind_spot.experiments import Experiment, reported_probability, run_experiment
 from blind_spot.statistics import (
     detection_probability, tests_for_detection, wilson_interval, zero_failure_upper,
 )
@@ -40,6 +40,13 @@ class StatisticsTests(unittest.TestCase):
 
 
 class ExperimentTests(unittest.TestCase):
+    def test_publication_precision_ignores_only_last_bit_noise(self):
+        windows = 0.6321207427683548
+        linux = 0.632120742768355
+        self.assertEqual(reported_probability(windows), reported_probability(linux))
+        self.assertLess(abs(reported_probability(windows) - windows), 1e-12)
+        self.assertNotEqual(reported_probability(0.25), reported_probability(0.250001))
+
     def test_reproducible_and_expected_distribution(self):
         spec = Experiment("test", "expanded", 20000, 42, 0.25)
         result = run_experiment(spec)
