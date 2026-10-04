@@ -2,7 +2,9 @@
 
 import argparse
 import csv
+from difflib import unified_diff
 from html import escape
+from itertools import islice
 import json
 import math
 from pathlib import Path
@@ -181,6 +183,14 @@ def main() -> None:
             for path in sorted(generated.iterdir()):
                 expected = args.output / path.name
                 if not expected.is_file() or expected.read_bytes() != path.read_bytes():
+                    if expected.is_file():
+                        difference = unified_diff(
+                            expected.read_text(encoding="utf-8").splitlines(),
+                            path.read_text(encoding="utf-8").splitlines(),
+                            fromfile="published", tofile="recomputed", n=1,
+                        )
+                        for line in islice(difference, 60):
+                            print(line[:240])
                     raise SystemExit(f"Reproducibility check failed: {expected}")
         print("PASS: all seven generated result artifacts reproduce byte-for-byte.")
     else:
